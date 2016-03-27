@@ -20,7 +20,7 @@ namespace Silent.Tetris.Core.Renderers
                     {
                         Console.BackgroundColor = ConsoleColor.Cyan;
                         int xPosition = sprite.Position.Left + x * emptyCell.Length;
-                        int yPosition = sprite.Position.Bottom + y;
+                        int yPosition = sprite.Position.Bottom + sprite.Size.Height - y - 1;
                         ConsoleHelper.WriteAtPosition(xPosition, yPosition, emptyCell);
                     }
                 }

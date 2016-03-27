@@ -25,10 +25,8 @@ namespace Silent.Tetris.Views
         {
             Console.Clear();
 
-            ISpriteRenderable spriteRenderer = new SpriteRenderer();
-            spriteRenderer.Render(Presenter.GameField.Ground);
-            spriteRenderer.Render(Presenter.GameField.CurrentFigure);
-            spriteRenderer.Render(Presenter.GameField.NextFigure);
+            IGameFieldRenderable gameFieldRenderable = new GameFieldRenderer();
+            gameFieldRenderable.Render(Presenter.GameField);
         }
     }
 }

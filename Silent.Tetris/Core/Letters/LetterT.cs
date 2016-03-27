@@ -1,0 +1,23 @@
+using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Core.Sprites;
+
+namespace Silent.Tetris.Core.Letters
+{
+    public class LetterT : FigureBase
+    {
+        public LetterT() : base(Position.None, new[,]
+        {
+            { Color.Cyan, Color.Cyan, Color.Cyan },
+            { Color.Transparent, Color.Cyan, Color.Transparent },
+            { Color.Transparent, Color.Cyan, Color.Transparent },
+            { Color.Transparent, Color.Cyan, Color.Transparent },
+            { Color.Transparent, Color.Cyan, Color.Transparent }
+        })
+        {
+        }
+
+        public LetterT(Position position, Color[,] cells) : base(position, cells)
+        {
+        }
+    }
+}
