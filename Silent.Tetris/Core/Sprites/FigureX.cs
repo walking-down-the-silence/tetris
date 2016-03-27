@@ -6,9 +6,9 @@ namespace Silent.Tetris.Core.Sprites
     {
         public FigureX() : base(Position.None, new[,]
                 {
-                    { Color.Transparent, Color.Cyan, Color.Transparent },
-                    { Color.Cyan, Color.Cyan, Color.Cyan },
-                    { Color.Transparent, Color.Cyan, Color.Transparent }
+                    { Color.Transparent, Color.Gray, Color.Transparent },
+                    { Color.Gray, Color.Gray, Color.Gray },
+                    { Color.Transparent, Color.Gray, Color.Transparent }
                 })
         {
         }

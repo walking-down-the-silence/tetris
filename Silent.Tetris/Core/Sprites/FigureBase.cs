@@ -16,7 +16,7 @@ namespace Silent.Tetris.Core.Sprites
             _size = new Size(cells.GetLength(1), cells.GetLength(0));
         }
 
-        public Color this[int x, int y] => _cells[y, x];
+        public Color this[int x, int y] => _cells[_size.Height - y - 1, x];
 
         public Position Position => _position;
 

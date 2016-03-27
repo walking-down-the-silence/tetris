@@ -3,8 +3,8 @@ using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Contracts.Rendering;
 using Silent.Tetris.Contracts.Views;
-using Silent.Tetris.Core.Renderers;
 using Silent.Tetris.Presenters;
+using Silent.Tetris.Renderers;
 
 namespace Silent.Tetris.Views
 {

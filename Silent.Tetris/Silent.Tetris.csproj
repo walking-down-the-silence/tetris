@@ -70,6 +70,7 @@
     <Compile Include="Contracts\Core\Position.cs" />
     <Compile Include="Contracts\Core\RotateDirection.cs" />
     <Compile Include="Contracts\Core\Size.cs" />
+    <Compile Include="Core\ColorConverter.cs" />
     <Compile Include="Core\FigureRandomGenerator.cs" />
     <Compile Include="Contracts\IFactory.cs" />
     <Compile Include="Contracts\Core\IGameField.cs" />
@@ -92,7 +93,7 @@
     <Compile Include="Core\Letters\LetterS.cs" />
     <Compile Include="Core\Letters\LetterT.cs" />
     <Compile Include="Core\Letters\LetterX.cs" />
-    <Compile Include="Core\Renderers\GameFieldRenderer.cs" />
+    <Compile Include="Renderers\GameFieldRenderer.cs" />
     <Compile Include="Core\Sprites\GameFieldRow.cs" />
     <Compile Include="Core\Sprites\GoundFigure.cs" />
     <Compile Include="Core\Sprites\FigureT.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Core\Sprites\FigureX.cs" />
     <Compile Include="Contracts\IObserveAsync.cs" />
     <Compile Include="Observers\GameEngineCommandsObserver.cs" />
-    <Compile Include="Core\Renderers\SpriteRenderer.cs" />
+    <Compile Include="Renderers\SpriteRenderer.cs" />
     <Compile Include="Views\GameView.cs" />
     <Compile Include="Presenters\GamePresenter.cs" />
     <Compile Include="Presenters\HighScoresPresenter.cs" />

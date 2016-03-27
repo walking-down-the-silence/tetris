@@ -3,6 +3,14 @@
     public enum Color
     {
         Transparent,
+        Black,
+        White,
+        Gray,
+        Green,
+        Blue,
+        Red,
+        Yellow,
+        Magenta,
         Cyan
     }
 }

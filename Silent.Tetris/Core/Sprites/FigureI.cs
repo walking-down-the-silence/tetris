@@ -6,10 +6,10 @@ namespace Silent.Tetris.Core.Sprites
     {
         public FigureI() : base(Position.None, new[,]
                 {
-                    { Color.Cyan },
-                    { Color.Cyan },
-                    { Color.Cyan },
-                    { Color.Cyan }
+                    { Color.Magenta },
+                    { Color.Magenta },
+                    { Color.Magenta },
+                    { Color.Magenta }
                 })
         {
         }
