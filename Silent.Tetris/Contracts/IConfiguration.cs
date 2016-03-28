@@ -1,6 +1,6 @@
 ﻿using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris
+namespace Silent.Tetris.Contracts
 {
     public interface IConfiguration
     {

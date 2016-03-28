@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ConsoleCommand.cs" />
-    <Compile Include="ConsoleHelper.cs" />
+    <Compile Include="Contracts\IContainer.cs" />
+    <Compile Include="GameIocContainer.cs" />
+    <Compile Include="Renderers\ConsoleHelper.cs" />
     <Compile Include="Contracts\Core\Color.cs" />
     <Compile Include="Contracts\Core\IGameFieldRow.cs" />
     <Compile Include="Contracts\ICommand.cs" />
@@ -70,7 +72,7 @@
     <Compile Include="Contracts\Core\Position.cs" />
     <Compile Include="Contracts\Core\RotateDirection.cs" />
     <Compile Include="Contracts\Core\Size.cs" />
-    <Compile Include="Core\ColorConverter.cs" />
+    <Compile Include="Renderers\ColorConverter.cs" />
     <Compile Include="Core\FigureRandomGenerator.cs" />
     <Compile Include="Contracts\IFactory.cs" />
     <Compile Include="Contracts\Core\IGameField.cs" />
@@ -98,10 +100,10 @@
     <Compile Include="Core\Sprites\FigureT.cs" />
     <Compile Include="Core\Sprites\FigureZ.cs" />
     <Compile Include="Core\SymbolFactory.cs" />
-    <Compile Include="IConfiguration.cs" />
+    <Compile Include="Contracts\IConfiguration.cs" />
     <Compile Include="Core\MotionDetector.cs" />
     <Compile Include="Extensions\FigureTransformer.cs" />
-    <Compile Include="NavigationService.cs" />
+    <Compile Include="Core\NavigationService.cs" />
     <Compile Include="Observers\ConsoleCommandsObserver.cs" />
     <Compile Include="Contracts\ICloneable.cs" />
     <Compile Include="Core\GameField.cs" />

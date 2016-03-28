@@ -1,7 +1,7 @@
 ﻿using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Views;
 
-namespace Silent.Tetris
+namespace Silent.Tetris.Core
 {
     public class NavigationService : INavigationService
     {

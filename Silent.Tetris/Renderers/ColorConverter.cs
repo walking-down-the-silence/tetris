@@ -1,7 +1,7 @@
 using System;
 using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris.Core
+namespace Silent.Tetris.Renderers
 {
     public class ColorConverter
     {

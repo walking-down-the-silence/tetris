@@ -1,6 +1,6 @@
 using System;
 
-namespace Silent.Tetris
+namespace Silent.Tetris.Renderers
 {
     public static class ConsoleHelper
     {
