@@ -10,6 +10,8 @@
 
         IGround Ground { get; }
 
+        ISprite GetView();
+
         void MoveCurrentFigure(MotionDirection motionDirection);
 
         void RotateCurrentFigure();

@@ -1,4 +1,5 @@
 ﻿using Silent.Tetris.Contracts;
+using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Views;
 
 namespace Silent.Tetris.Views
@@ -9,12 +10,15 @@ namespace Silent.Tetris.Views
 
         protected MenuOptions[] Options;
 
-        protected ViewBase(MenuOptions[] options)
+        protected ViewBase(Size size, MenuOptions[] options)
         {
+            Size = size;
             Options = options;
         }
 
         public INavigationService NavigationService { get; protected set; }
+
+        public Size Size { get; }
 
         public TPresenter Presenter { get; protected set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Silent.Tetris.Contracts;
+using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Presenters;
 
@@ -10,7 +11,7 @@ namespace Silent.Tetris.Views
     {
         private readonly IList<Player> _highScores;
 
-        public HighScoresView() : base(new[] { MenuOptions.Back })
+        public HighScoresView(Size size) : base(size, new[] { MenuOptions.Back })
         {
             _highScores = new List<Player>
             {

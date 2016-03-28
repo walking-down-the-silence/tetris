@@ -34,7 +34,7 @@ namespace Silent.Tetris.Presenters
                 case ConsoleKey.Escape:
                 case ConsoleKey.Enter:
                     _commandObserverDisposable.Dispose();
-                    _highScoresView.NavigationService.Navigate(new HomeView());
+                    _highScoresView.NavigationService.Navigate(new HomeView(_highScoresView.Size));
                     break;
             }
         }

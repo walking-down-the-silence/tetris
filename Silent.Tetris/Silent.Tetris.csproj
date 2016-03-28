@@ -93,7 +93,6 @@
     <Compile Include="Core\Letters\LetterS.cs" />
     <Compile Include="Core\Letters\LetterT.cs" />
     <Compile Include="Core\Letters\LetterX.cs" />
-    <Compile Include="Renderers\GameFieldRenderer.cs" />
     <Compile Include="Core\Sprites\GameFieldRow.cs" />
     <Compile Include="Core\Sprites\GoundFigure.cs" />
     <Compile Include="Core\Sprites\FigureT.cs" />

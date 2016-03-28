@@ -25,7 +25,7 @@ namespace Silent.Tetris.Presenters
 
         public void Initialize()
         {
-            _gameField = new GameField(new Size(Console.WindowWidth, Console.WindowHeight));
+            _gameField = new GameField(_gameView.Size);
 
             _gameEngine = new GameEngine();
             _gameEngineDisposable = _gameEngine.Run(_gameField);
@@ -58,7 +58,7 @@ namespace Silent.Tetris.Presenters
                 case ConsoleKey.Escape:
                     _gameEngineDisposable.Dispose();
                     _commandObserverDisposable.Dispose();
-                    _gameView.NavigationService.Navigate(new HomeView());
+                    _gameView.NavigationService.Navigate(new HomeView(_gameView.Size));
                     break;
             }
         }

@@ -15,19 +15,14 @@ namespace Silent.Tetris
             IConfiguration gameConfiguration = BuildConsoleConfiguration("Tetris");
             Initialize(gameConfiguration);
 
-            INavigationService navigationService = Create<NavigationService>();
-            navigationService.Navigate(Create<HomeView>());
+            INavigationService navigationService = new NavigationService();
+            navigationService.Navigate(new GameView(gameConfiguration.Size));
 
             while (navigationService.CurrentView != null)
             {
                 navigationService.CurrentView.Render();
                 Task.Delay(200).Wait();
             }
-        }
-
-        private static TSource Create<TSource>() where TSource : class, new()
-        {
-            return new TSource();
         }
 
         private static void TaskSchedulerOnUnobservedException(object sender, UnobservedTaskExceptionEventArgs eventArgs)

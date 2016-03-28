@@ -57,10 +57,10 @@ namespace Silent.Tetris.Presenters
             switch (selectedOption)
             {
                 case MenuOptions.StartGame:
-                    view = new GameView();
+                    view = new GameView(_homeView.Size);
                     break;
                 case MenuOptions.HighScores:
-                    view = new HighScoresView();
+                    view = new HighScoresView(_homeView.Size);
                     break;
             }
 

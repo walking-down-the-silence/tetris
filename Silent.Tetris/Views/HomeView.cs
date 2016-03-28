@@ -1,5 +1,6 @@
 ﻿using System;
 using Silent.Tetris.Contracts;
+using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Presenters;
 
@@ -7,7 +8,7 @@ namespace Silent.Tetris.Views
 {
     public class HomeView : ViewBase<IHomePresenter>
     {
-        public HomeView() : base(
+        public HomeView(Size size) : base(size,
             new[]
             {
                 MenuOptions.StartGame,
