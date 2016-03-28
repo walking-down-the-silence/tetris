@@ -11,9 +11,12 @@ namespace Silent.Tetris.Views
 {
     public class GameView : IGameView
     {
+        private readonly ISpriteRenderable _gameFieldRenderable;
+
         public GameView(Size size)
         {
             Size = size;
+            _gameFieldRenderable = new SpriteRenderer();
         }
 
         public INavigationService NavigationService { get; private set; }
@@ -31,8 +34,7 @@ namespace Silent.Tetris.Views
 
         public void Render()
         {
-            ISpriteRenderable gameFieldRenderable = new SpriteRenderer();
-            gameFieldRenderable.Render(Presenter.GameField.GetView());
+            _gameFieldRenderable.Render(Presenter.GameField.GetView());
         }
     }
 }

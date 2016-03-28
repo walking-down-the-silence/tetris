@@ -9,9 +9,14 @@ namespace Silent.Tetris.Renderers
     {
         private readonly ColorConverter _colorConverter = new ColorConverter();
 
+        public SpriteRenderer()
+        {
+            Console.Clear();
+        }
+
         public void Render(ISprite sprite)
         {
-            const string emptyCell = " ";
+            const string emptyCell = "  ";
             Console.CursorVisible = false;
             Console.ResetColor();
 

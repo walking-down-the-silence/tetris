@@ -13,17 +13,20 @@ namespace Silent.Tetris.Core
 
         private readonly FigureRandomGenerator _figureRandomGenerator;
         private readonly MotionDetector _motionDetector = new MotionDetector();
-        private readonly Position _nextFigureFieldPosition;
-        private readonly Size _nextFigureFieldSize;
+        private readonly IFactoryMethod<IEnumerable<IFigure>, string> _symbolFactory;
         private readonly IList<IFigure> _scoreWordCharacters;
         private readonly IList<IFigure> _nextWordCharacters;
         private readonly IList<IFigure> _scoreNumberCharacters;
+        private readonly Position _nextFigureFieldPosition;
+        private readonly Size _nextFigureFieldSize;
         private IFigure _currentFigure;
         private IFigure _nextFigure;
         private IGround _groundFigure;
         private Color[,] _cachedGameFieldView;
 
         #endregion
+
+        #region Constructor
 
         public GameField(Size size)
         {
@@ -37,10 +40,10 @@ namespace Silent.Tetris.Core
             _nextFigure = _figureRandomGenerator.GenerateNext();
             GenerateNextFigure();
 
-            IFactoryMethod<IEnumerable<IFigure>, string> symbolFactory = new SymbolFactory();
-            _scoreWordCharacters = symbolFactory.Create("Score").ToList();
-            _nextWordCharacters = symbolFactory.Create("Next").ToList();
-            _scoreNumberCharacters = symbolFactory.Create("17000").ToList();
+            _symbolFactory = new SymbolFactory();
+            _scoreWordCharacters = _symbolFactory.Create("Score").ToList();
+            _nextWordCharacters = _symbolFactory.Create("Next").ToList();
+            _scoreNumberCharacters = _symbolFactory.Create(string.Empty).ToList();
 
             int initialPositionX = _groundFigure.Position.Left + _groundFigure.Size.Width + 2;
             int initialPositionY = _groundFigure.Position.Bottom + _groundFigure.Size.Height / 2 + 2;
@@ -49,6 +52,8 @@ namespace Silent.Tetris.Core
             PositionCharacters(initialPositionX, initialPositionY - 6, _scoreWordCharacters);
             PositionCharacters(initialPositionX, initialPositionY - 12, _scoreNumberCharacters);
         }
+
+        #endregion
 
         #region Public Properties
 
@@ -62,18 +67,20 @@ namespace Silent.Tetris.Core
 
         #endregion
 
+        #region Public Methods
+
         public ISprite GetView()
         {
             Color[,] currentGameFieldView = new Color[Size.Height, Size.Width];
             IEnumerable<ISprite> sprites = new ISprite[]
                 {
+                    _groundFigure,
                     _currentFigure,
-                    //_nextFigure,
-                    //_groundFigure,
-                };
-                //.Concat(_scoreWordCharacters)
-                //.Concat(_nextWordCharacters)
-                //.Concat(_scoreNumberCharacters);
+                    _nextFigure
+                }
+                .Concat(_scoreWordCharacters)
+                .Concat(_nextWordCharacters)
+                .Concat(_scoreNumberCharacters);
 
             foreach (ISprite sprite in sprites)
             {
@@ -128,6 +135,8 @@ namespace Silent.Tetris.Core
 
             _nextFigure = nextFigure.SetPosition(new Position(nextX, nextY));
         }
+
+        #endregion
 
         #region Private Methods
 

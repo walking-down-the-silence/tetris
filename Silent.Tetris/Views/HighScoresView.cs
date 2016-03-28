@@ -58,7 +58,7 @@ namespace Silent.Tetris.Views
             {
                 Player highScore = _highScores[index];
                 string formattedScore = highScore.Name + highScore.Score.ToString()
-                    .PadLeft(totalLineLength - highScore.Name.Length, '.');
+                    .PadLeft(totalLineLength - highScore.Name.Length, '_');
 
                 int left = Console.WindowWidth / 2 - formattedScore.Length / 2 - 1;
                 int top = Console.WindowHeight / 2 - totalLinesCount / 2 + index + 1;
