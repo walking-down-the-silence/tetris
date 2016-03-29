@@ -10,12 +10,14 @@ namespace Silent.Tetris.Presenters
     public class HighScoresPresenter : IHighScoresPresenter
     {
         private readonly HighScoresView _highScoresView;
+        private readonly IContainer _container;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
         private IDisposable _commandObserverDisposable;
 
-        public HighScoresPresenter(HighScoresView highScoresView)
+        public HighScoresPresenter(HighScoresView highScoresView, IContainer container)
         {
             _highScoresView = highScoresView;
+            _container = container;
         }
 
         public void Initialize()
@@ -34,7 +36,7 @@ namespace Silent.Tetris.Presenters
                 case ConsoleKey.Escape:
                 case ConsoleKey.Enter:
                     _commandObserverDisposable.Dispose();
-                    _highScoresView.NavigationService.Navigate(new HomeView(_highScoresView.Size));
+                    _highScoresView.NavigationService.Navigate(new HomeView(_highScoresView.Size, _container));
                     break;
             }
         }

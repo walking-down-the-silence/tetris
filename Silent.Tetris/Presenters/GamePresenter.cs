@@ -16,17 +16,20 @@ namespace Silent.Tetris.Presenters
         private const int LayoutMargin = 1;
         private const int LeftPanelWidth = 0;
         private const int RightPanelWidth = 20;
+        private readonly IContainer _container;
         private readonly GameView _gameView;
         private IGameField _gameField;
         private IRightInfoField _rightInfoField;
         private GameEngine _gameEngine;
+        private ICommandBus _commandBus;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
         private IDisposable _gameEngineDisposable;
         private IDisposable _commandObserverDisposable;
 
-        public GamePresenter(GameView gameView)
+        public GamePresenter(GameView gameView, IContainer container)
         {
             _gameView = gameView;
+            _container = container;
         }
 
         public void Initialize()
@@ -34,13 +37,18 @@ namespace Silent.Tetris.Presenters
             InitializeGameField();
             InitializeRightInfoField();
 
-            _gameEngine = new GameEngine();
+            _commandBus = _container.Resolve<ICommandBus>();
+            _gameEngine = new GameEngine(_container, _commandBus);
             _gameEngineDisposable = _gameEngine.Run(_gameField);
 
             _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
             _consoleCommandObserveAsync.Update += Handle;
             _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
         }
+
+        public IField GameField => _gameField;
+
+        public IField RightInfoField => _rightInfoField;
 
         private void InitializeRightInfoField()
         {
@@ -60,32 +68,21 @@ namespace Silent.Tetris.Presenters
             _gameField = new GameField(gameFieldPosition, gameFieldSize);
         }
 
-        public IField GameField => _gameField;
-
-        public IField RightInfoField => _rightInfoField;
-
         private void Handle(object sender, ICommand command)
         {
             ConsoleCommand consoleCommand = (ConsoleCommand)command;
 
             switch (consoleCommand.Key)
             {
-                case ConsoleKey.LeftArrow:
-                    _gameField.MoveCurrentFigure(MotionDirection.Left);
-                    break;
-                case ConsoleKey.RightArrow:
-                    _gameField.MoveCurrentFigure(MotionDirection.Right);
-                    break;
-                case ConsoleKey.DownArrow:
-                    _gameField.MoveCurrentFigure(MotionDirection.Down);
-                    break;
-                case ConsoleKey.Spacebar:
-                    _gameField.RotateCurrentFigure();
-                    break;
                 case ConsoleKey.Escape:
+                    _commandBus.Complete();
+                    _commandBus.Dispose();
                     _gameEngineDisposable.Dispose();
                     _commandObserverDisposable.Dispose();
-                    _gameView.NavigationService.Navigate(new HomeView(_gameView.Size));
+                    _gameView.NavigationService.Navigate(new HomeView(_gameView.Size, _container));
+                    break;
+                default:
+                    _commandBus.Add(command);
                     break;
             }
         }

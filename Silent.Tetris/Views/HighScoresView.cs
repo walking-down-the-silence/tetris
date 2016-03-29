@@ -10,10 +10,12 @@ namespace Silent.Tetris.Views
 {
     public class HighScoresView : ViewBase<IHighScoresPresenter>, IHighScoreView
     {
+        private readonly IContainer _container;
         private readonly IList<Player> _highScores;
 
-        public HighScoresView(Size size) : base(size, new[] { MenuOptions.Back })
+        public HighScoresView(Size size, IContainer container) : base(size, new[] { MenuOptions.Back })
         {
+            _container = container;
             _highScores = new List<Player>
             {
                 new Player { Name = "GaaRa1", Score = 179000, Date = DateTime.Now },
@@ -34,7 +36,7 @@ namespace Silent.Tetris.Views
         public override void Initialize(INavigationService navigationService)
         {
             NavigationService = navigationService;
-            Presenter = new HighScoresPresenter(this);
+            Presenter = new HighScoresPresenter(this, _container);
             Presenter.Initialize();
         }
 

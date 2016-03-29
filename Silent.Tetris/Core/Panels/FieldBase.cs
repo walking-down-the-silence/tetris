@@ -49,7 +49,11 @@ namespace Silent.Tetris.Core.Panels
                 {
                     int xPosition = sprite.Position.Left - Position.Left + i;
                     int yPosition = Size.Height - sprite.Position.Bottom - j - 1;
-                    if (xPosition < colorView.GetLength(1) && yPosition < colorView.GetLength(0))
+
+                    if (xPosition >= 0 && 
+                        xPosition < colorView.GetLength(1) && 
+                        yPosition >= 0 &&
+                        yPosition < colorView.GetLength(0))
                     {
                         colorView[yPosition, xPosition] = sprite[i, j];
                     }

@@ -11,12 +11,14 @@ namespace Silent.Tetris.Presenters
     public class HomePresenter : IHomePresenter
     {
         private readonly HomeView _homeView;
+        private readonly IContainer _container;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
         private IDisposable _commandObserverDisposable;
 
-        public HomePresenter(HomeView homeView)
+        public HomePresenter(HomeView homeView, IContainer container)
         {
             _homeView = homeView;
+            _container = container;
         }
 
         public void Initialize()
@@ -57,10 +59,10 @@ namespace Silent.Tetris.Presenters
             switch (selectedOption)
             {
                 case MenuOptions.StartGame:
-                    view = new GameView(_homeView.Size);
+                    view = new GameView(_homeView.Size, _container);
                     break;
                 case MenuOptions.HighScores:
-                    view = new HighScoresView(_homeView.Size);
+                    view = new HighScoresView(_homeView.Size, _container);
                     break;
             }
 

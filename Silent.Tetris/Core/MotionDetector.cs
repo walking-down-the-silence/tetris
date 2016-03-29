@@ -34,7 +34,7 @@ namespace Silent.Tetris.Core
 
         private bool IsShiftAllowed(IGround ground, IFigure figure, int x, int y, int xShift, int yShift)
         {
-            bool intersect = false;
+            bool shiftAllowed = false;
             int figureLeft = figure.Position.Left + x + xShift;
             int figureTop = figure.Position.Bottom + y + yShift;
 
@@ -45,12 +45,20 @@ namespace Silent.Tetris.Core
                 groundY < ground.Size.Height &&
                 groundX >= 0 &&
                 groundX < ground.Size.Width &&
-                ground[groundX, groundY] == Color.Transparent)
+                ground[groundX, groundY] == Color.Transparent &&
+                IsFigureInGameFieldBounds(ground, figure))
             {
-                intersect = true;
+                shiftAllowed = true;
             }
 
-            return intersect;
+            return shiftAllowed;
+        }
+
+        private bool IsFigureInGameFieldBounds(IGround ground, ISprite sprite)
+        {
+            return sprite.Position.Bottom >= ground.Position.Bottom
+                && sprite.Position.Left + sprite.Size.Width < ground.Position.Left + ground.Size.Width + 1
+                && sprite.Position.Left >= ground.Position.Left;
         }
     }
 }

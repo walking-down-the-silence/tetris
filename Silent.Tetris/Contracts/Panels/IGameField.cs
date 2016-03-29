@@ -8,12 +8,8 @@ namespace Silent.Tetris.Contracts.Panels
 
         IGround Ground { get; }
 
-        void AssignCurrentFigure(IFigure currentFigure);
+        void SetCurrentFigure(IFigure currentFigure);
 
-        void MoveCurrentFigure(MotionDirection motionDirection);
-
-        void RotateCurrentFigure();
-
-        void GenerateNextFigure();
+        void SetGround(IGround ground);
     }
 }

@@ -9,7 +9,9 @@ namespace Silent.Tetris.Views
 {
     public class HomeView : ViewBase<IHomePresenter>, IHomeView
     {
-        public HomeView(Size size) : base(size,
+        private readonly IContainer _container;
+
+        public HomeView(Size size, IContainer container) : base(size,
             new[]
             {
                 MenuOptions.StartGame,
@@ -17,12 +19,13 @@ namespace Silent.Tetris.Views
                 MenuOptions.Exit
             })
         {
+            _container = container;
         }
 
         public override void Initialize(INavigationService navigationService)
         {
             NavigationService = navigationService;
-            Presenter = new HomePresenter(this);
+            Presenter = new HomePresenter(this, _container);
             Presenter.Initialize();
         }
 
