@@ -1,4 +1,5 @@
 ﻿using System;
+using Silent.Tetris.Contracts.Panels;
 
 namespace Silent.Tetris.Contracts.Core
 {

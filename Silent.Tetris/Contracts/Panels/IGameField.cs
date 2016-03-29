@@ -1,16 +1,14 @@
-﻿namespace Silent.Tetris.Contracts.Core
+﻿using Silent.Tetris.Contracts.Core;
+
+namespace Silent.Tetris.Contracts.Panels
 {
-    public interface IGameField
+    public interface IGameField : IField
     {
-        Size Size { get; }
-
         IFigure CurrentFigure { get; }
-
-        IFigure NextFigure { get; }
 
         IGround Ground { get; }
 
-        ISprite GetView();
+        void AssignCurrentFigure(IFigure currentFigure);
 
         void MoveCurrentFigure(MotionDirection motionDirection);
 

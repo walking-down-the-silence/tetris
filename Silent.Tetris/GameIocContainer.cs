@@ -6,7 +6,7 @@ namespace Silent.Tetris
 {
     public class GameIocContainer : IContainer
     {
-        private readonly IDictionary<Tuple<Type, string>, object> _registeredFactories = new Dictionary<Tuple<Type, string>, object>();
+        private readonly IDictionary<Tuple<Type, string>, Func<IContainer, object>> _registeredFactories = new Dictionary<Tuple<Type, string>, Func<IContainer, object>>();
 
         public TService Resolve<TService>() where TService : class
         {
@@ -16,7 +16,7 @@ namespace Silent.Tetris
         public TService Resolve<TService>(string serviceName) where TService : class
         {
             Tuple<Type, string> key = new Tuple<Type, string>(typeof(TService), serviceName);
-            if (_registeredFactories.ContainsKey(key))
+            if (_registeredFactories.ContainsKey(key) == false)
             {
                 string exceptionMessage = string.IsNullOrWhiteSpace(serviceName)
                     ? $"Service of type '{typeof(TService)}' is not registered"
@@ -25,25 +25,25 @@ namespace Silent.Tetris
                 throw new ArgumentException(exceptionMessage);
             }
 
-            return _registeredFactories[key] as TService;
+            return _registeredFactories[key].Invoke(this) as TService;
         }
 
-        public void Register<TService>(TService serviceInstance) where TService : class
+        public void Register<TService>(object serviceInstance) where TService : class
         {
-            Register(string.Empty, serviceInstance);
+            Register<TService>(string.Empty, serviceInstance);
         }
 
-        public void Register<TService>(string serviceName, TService serviceInstance) where TService : class
+        public void Register<TService>(string serviceName, object serviceInstance) where TService : class
         {
-            Register(serviceName, () => serviceInstance);
+            Register<TService>(serviceName, container => serviceInstance);
         }
 
-        public void Register<TService>(Func<TService> factoryMethod) where TService : class
+        public void Register<TService>(Func<IContainer, object> factoryMethod) where TService : class
         {
-            Register(string.Empty, factoryMethod);
+            Register<TService>(string.Empty, factoryMethod);
         }
 
-        public void Register<TService>(string serviceName, Func<TService> factoryMethod) where TService : class
+        public void Register<TService>(string serviceName, Func<IContainer, object> factoryMethod) where TService : class
         {
             Tuple<Type, string> key = new Tuple<Type, string>(typeof(TService), serviceName);
             if (_registeredFactories.ContainsKey(key))

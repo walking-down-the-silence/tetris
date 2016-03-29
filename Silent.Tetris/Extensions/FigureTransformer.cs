@@ -3,7 +3,7 @@ using Silent.Tetris.Contracts.Core;
 
 namespace Silent.Tetris.Extensions
 {
-    public static class SpriteTransformer
+    public static class FigureTransformer
     {
         public static IFigure Move(this IFigure figure, MotionDirection motionDirection)
         {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Contracts.Panels;
 
 namespace Silent.Tetris.Core.Sprites
 {
@@ -48,8 +49,8 @@ namespace Silent.Tetris.Core.Sprites
             {
                 for (int j = 0; j < figure.Size.Height; ++j)
                 {
-                    int y = figure.Position.Bottom + figure.Size.Height - j - 1;
-                    int x = figure.Position.Left + i;
+                    int y = figure.Position.Bottom - _position.Bottom + figure.Size.Height - j - 1;
+                    int x = figure.Position.Left- _position.Left + i;
 
                     if (_gameFieldRows[y][x] == Color.Transparent)
                     {

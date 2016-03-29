@@ -1,9 +1,11 @@
-using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Contracts.Panels;
 
 namespace Silent.Tetris.Contracts.Presenters
 {
     public interface IGamePresenter : IPresenter
     {
-        IGameField GameField { get; }
+        IField GameField { get; }
+
+        IField RightInfoField { get; }
     }
 }

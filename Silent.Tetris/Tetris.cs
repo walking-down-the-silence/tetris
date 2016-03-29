@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Contracts.Rendering;
 using Silent.Tetris.Core;
+using Silent.Tetris.Renderers;
 using Silent.Tetris.Views;
 
 namespace Silent.Tetris
@@ -14,7 +16,7 @@ namespace Silent.Tetris
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedException;
 
             IContainer gameServiceLocator = BuildServiceLocator();
-            IConfiguration gameConfiguration = BuildConsoleConfiguration("Tetris");
+            IConfiguration gameConfiguration = gameServiceLocator.Resolve<IConfiguration>();
             Initialize(gameConfiguration);
 
             INavigationService navigationService = new NavigationService();
@@ -23,14 +25,16 @@ namespace Silent.Tetris
             while (navigationService.CurrentView != null)
             {
                 navigationService.CurrentView.Render();
-                Task.Delay(200).Wait();
+                Task.Delay(50).Wait();
             }
         }
 
         private static IContainer BuildServiceLocator()
         {
             IContainer gameContainer = new GameIocContainer();
+            gameContainer.Register<IConfiguration>(BuildConsoleConfiguration("Tetris"));
             gameContainer.Register<INavigationService>(new NavigationService());
+            gameContainer.Register<ISpriteRenderable>(container => new SpriteRenderer());
 
             return gameContainer;
         }

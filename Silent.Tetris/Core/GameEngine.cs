@@ -2,6 +2,7 @@
 using Silent.Tetris.Commands;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Contracts.Panels;
 using Silent.Tetris.Observers;
 
 namespace Silent.Tetris.Core

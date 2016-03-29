@@ -4,19 +4,17 @@ using System.Linq;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris.Core
+namespace Silent.Tetris
 {
-    public class FigureRandomGenerator : IDisposable
+    public class FigureRandomGenerator : IRandomGenerator<IFigure>, IDisposable
     {
-        private readonly Position _initialPosition;
         private readonly Random _randomGenerator = new Random();
         private readonly IList<IFigure> _figures;
         private readonly IEnumerator<IFigure> _spriteEnumerator;
         private bool _isDisposed;
 
-        public FigureRandomGenerator(IFactory<IFigure> figureFactory, Position initialPosition)
+        public FigureRandomGenerator(IFactory<IFigure> figureFactory)
         {
-            _initialPosition = initialPosition;
             _figures = figureFactory.Create().ToList();
             _spriteEnumerator = GetEnumerator();
         }
@@ -37,7 +35,7 @@ namespace Silent.Tetris.Core
             while (!_isDisposed)
             {
                 int nextFigureIndex = _randomGenerator.Next(_figures.Count);
-                IFigure nextRandomFigure = _figures[nextFigureIndex].SetPosition(_initialPosition);
+                IFigure nextRandomFigure = _figures[nextFigureIndex];
                 yield return nextRandomFigure;
             }
         }

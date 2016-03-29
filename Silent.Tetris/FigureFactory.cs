@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Core.Sprites;
 
-namespace Silent.Tetris.Core
+namespace Silent.Tetris
 {
     public class FigureFactory : IFactory<FigureBase>
     {

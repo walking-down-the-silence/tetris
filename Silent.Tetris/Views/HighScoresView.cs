@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
+using Silent.Tetris.Contracts.Views;
 using Silent.Tetris.Presenters;
 
 namespace Silent.Tetris.Views
 {
-    public class HighScoresView : ViewBase<IHighScoresPresenter>
+    public class HighScoresView : ViewBase<IHighScoresPresenter>, IHighScoreView
     {
         private readonly IList<Player> _highScores;
 

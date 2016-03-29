@@ -6,7 +6,7 @@ using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Core.Digits;
 using Silent.Tetris.Core.Letters;
 
-namespace Silent.Tetris.Core
+namespace Silent.Tetris
 {
     public class SymbolFactory : IFactoryMethod<IEnumerable<IFigure>, string>
     {

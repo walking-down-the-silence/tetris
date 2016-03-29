@@ -2,11 +2,12 @@
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
+using Silent.Tetris.Contracts.Views;
 using Silent.Tetris.Presenters;
 
 namespace Silent.Tetris.Views
 {
-    public class HomeView : ViewBase<IHomePresenter>
+    public class HomeView : ViewBase<IHomePresenter>, IHomeView
     {
         public HomeView(Size size) : base(size,
             new[]

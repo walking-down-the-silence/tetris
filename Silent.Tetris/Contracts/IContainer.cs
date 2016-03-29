@@ -8,12 +8,12 @@ namespace Silent.Tetris.Contracts
 
         TService Resolve<TService>(string serviceName) where TService : class;
 
-        void Register<TService>(TService serviceInstance) where TService : class;
+        void Register<TService>(object serviceInstance) where TService : class;
 
-        void Register<TService>(string serviceName, TService serviceInstance) where TService : class;
+        void Register<TService>(string serviceName, object serviceInstance) where TService : class;
 
-        void Register<TService>(Func<TService> factoryMethod) where TService : class;
+        void Register<TService>(Func<IContainer, object> factoryMethod) where TService : class;
 
-        void Register<TService>(string serviceName, Func<TService> factoryMethod) where TService : class;
+        void Register<TService>(string serviceName, Func<IContainer, object> factoryMethod) where TService : class;
     }
 }

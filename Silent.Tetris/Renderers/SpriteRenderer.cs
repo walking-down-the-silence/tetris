@@ -16,6 +16,9 @@ namespace Silent.Tetris.Renderers
 
         public void Render(ISprite sprite)
         {
+            if(sprite == null)
+                return;
+
             const string emptyCell = "  ";
             Console.CursorVisible = false;
             Console.ResetColor();
