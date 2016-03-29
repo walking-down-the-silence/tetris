@@ -37,6 +37,7 @@ namespace Silent.Tetris.Presenters
 
             _commandBus = _container.Resolve<ICommandBus>();
             _gameEngine = new GameEngine(_container, _commandBus);
+            _gameEngine.StateChanged += GameEngineOnStateChanged;
             _gameEngineDisposable = _gameEngine.Run(_gameField);
 
             _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
@@ -83,6 +84,12 @@ namespace Silent.Tetris.Presenters
                     _commandBus.Add(command);
                     break;
             }
+        }
+
+        private void GameEngineOnStateChanged(object sender, GameStateEventArgs gameStateEventArgs)
+        {
+            _rightInfoField.AssignNextFigure(gameStateEventArgs.NextFigure);
+            _rightInfoField.SetScore(gameStateEventArgs.CurrentScore);
         }
     }
 }

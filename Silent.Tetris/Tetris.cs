@@ -37,7 +37,7 @@ namespace Silent.Tetris
             gameContainer.Register<IFactory<IFigure>>(container => new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(container => new FigureRandomGenerator(container.Resolve<IFactory<IFigure>>()));
             gameContainer.Register<ICommandBus>(new CommandBus());
-
+            gameContainer.Register<IRepository<Player>>(container => new XmlRepository("highscores.xml"));
             return gameContainer;
         }
 
@@ -57,7 +57,7 @@ namespace Silent.Tetris
 
         private static IConfiguration BuildConsoleConfiguration(string title)
         {
-            return new GameConsoleConfiguration(new Position(10, 10), new Size(50, 60), title);
+            return new GameConsoleConfiguration(new Position(10, 10), new Size(50, 40), title);
         }
 
         private class GameConsoleConfiguration : IConfiguration

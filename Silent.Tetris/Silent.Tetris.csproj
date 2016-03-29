@@ -43,10 +43,12 @@
   <ItemGroup>
     <Compile Include="CommandBus.cs" />
     <Compile Include="ConsoleCommand.cs" />
+    <Compile Include="Contracts\Core\GameStateEventArgs.cs" />
     <Compile Include="Contracts\ICommandBus.cs" />
     <Compile Include="Contracts\IContainer.cs" />
     <Compile Include="Contracts\IMessageBus.cs" />
     <Compile Include="Contracts\IRandomGenerator.cs" />
+    <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\Panels\IField.cs" />
     <Compile Include="Contracts\Panels\IRightInfoField.cs" />
     <Compile Include="Core\Panels\FieldBase.cs" />
@@ -132,6 +134,7 @@
     <Compile Include="Presenters\HomePresenter.cs" />
     <Compile Include="Views\MenuOptions.cs" />
     <Compile Include="Views\ViewBase.cs" />
+    <Compile Include="XmlRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

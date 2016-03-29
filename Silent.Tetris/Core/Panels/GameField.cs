@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Panels;
 using Silent.Tetris.Core.Sprites;
@@ -31,7 +32,7 @@ namespace Silent.Tetris.Core.Panels
 
         protected override IEnumerable<ISprite> GetSpriteCollection()
         {
-            return new ISprite[] { Ground, CurrentFigure };
+            return new ISprite[] { Ground, CurrentFigure }.Where(x => x != null);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Silent.Tetris
 
         public ICommand Take()
         {
-            return _commands.Take();
+            return  _commands.IsCompleted ? default(ICommand) : _commands.Take();
         }
 
         public void Complete()

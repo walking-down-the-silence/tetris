@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
@@ -11,27 +10,11 @@ namespace Silent.Tetris.Views
     public class HighScoresView : ViewBase<IHighScoresPresenter>, IHighScoreView
     {
         private readonly IContainer _container;
-        private readonly IList<Player> _highScores;
 
         public HighScoresView(Size size, IContainer container) : base(size, new[] { MenuOptions.Back })
         {
             _container = container;
-            _highScores = new List<Player>
-            {
-                new Player { Name = "GaaRa1", Score = 179000, Date = DateTime.Now },
-                new Player { Name = "GaaRa2", Score = 169000, Date = DateTime.Now },
-                new Player { Name = "GaaRa3", Score = 159000, Date = DateTime.Now },
-                new Player { Name = "GaaRa4", Score = 149000, Date = DateTime.Now },
-                new Player { Name = "GaaRa5", Score = 139000, Date = DateTime.Now },
-                new Player { Name = "GaaRa6", Score = 129000, Date = DateTime.Now },
-                new Player { Name = "GaaRa7", Score = 119000, Date = DateTime.Now },
-                new Player { Name = "GaaRa8", Score = 109000, Date = DateTime.Now },
-                new Player { Name = "GaaRa9", Score = 105000, Date = DateTime.Now },
-                new Player { Name = "GaaRa10", Score = 104000, Date = DateTime.Now },
-            };
         }
-
-        public ICollection<Player> HighScores => _highScores;
 
         public override void Initialize(INavigationService navigationService)
         {
@@ -49,7 +32,7 @@ namespace Silent.Tetris.Views
             const int titleAndBackLines = 2;
             const int totalLineLength = 20;
 
-            int totalLinesCount = _highScores.Count + betweenLinesGap + titleAndBackLines;
+            int totalLinesCount = Presenter.HighScores.Count + betweenLinesGap + titleAndBackLines;
             int titleLeftPosition = Console.WindowWidth / 2 - title.Length / 2 - 1;
             int titleTopPosition = Console.WindowHeight / 2 - totalLinesCount / 2 - 1;
 
@@ -57,16 +40,29 @@ namespace Silent.Tetris.Views
             Console.SetCursorPosition(titleLeftPosition, titleTopPosition);
             Console.Write(title);
 
-            for (int index = 0; index < _highScores.Count; index++)
+            if (Presenter.HighScores.Count > 0)
             {
-                Player highScore = _highScores[index];
-                string formattedScore = highScore.Name + highScore.Score.ToString()
-                    .PadLeft(totalLineLength - highScore.Name.Length, '_');
+                int index = 0;
 
-                int left = Console.WindowWidth / 2 - formattedScore.Length / 2 - 1;
-                int top = Console.WindowHeight / 2 - totalLinesCount / 2 + index + 1;
+                foreach (Player playerScore in Presenter.HighScores)
+                {
+                    string formattedScore = playerScore.Name + playerScore.Score.ToString()
+                        .PadLeft(totalLineLength - playerScore.Name.Length, '_');
+
+                    int left = Console.WindowWidth / 2 - formattedScore.Length / 2 - 1;
+                    int top = Console.WindowHeight / 2 - totalLinesCount / 2 + index + 1;
+                    index++;
+                    Console.SetCursorPosition(left, top);
+                    Console.Write(formattedScore);
+                }
+            }
+            else
+            {
+                string noScoresMessage = "No Scores Yet...";
+                int left = Console.WindowWidth / 2 - noScoresMessage.Length / 2 - 1;
+                int top = Console.WindowHeight / 2 - totalLinesCount / 2 + 2;
                 Console.SetCursorPosition(left, top);
-                Console.Write(formattedScore);
+                Console.Write(noScoresMessage);
             }
 
             string formattedOption = $"- {MenuOptions.Back} -";

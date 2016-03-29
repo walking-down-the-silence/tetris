@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Views;
@@ -11,6 +12,7 @@ namespace Silent.Tetris.Presenters
         private readonly IContainer _container;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
         private IDisposable _commandObserverDisposable;
+        private IRepository<Player> _playerScoresRepository;
 
         public HighScoresPresenter(HighScoresView highScoresView, IContainer container)
         {
@@ -18,8 +20,13 @@ namespace Silent.Tetris.Presenters
             _container = container;
         }
 
+        public ICollection<Player> HighScores => _playerScoresRepository.GetAll();
+
         public void Initialize()
         {
+            _playerScoresRepository = _container.Resolve<IRepository<Player>>();
+            _playerScoresRepository.Load();
+
             _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
             _consoleCommandObserveAsync.Update += Handle;
             _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();

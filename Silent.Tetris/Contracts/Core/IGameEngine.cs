@@ -5,6 +5,8 @@ namespace Silent.Tetris.Contracts.Core
 {
     public interface IGameEngine
     {
+        event EventHandler<GameStateEventArgs> StateChanged;
+
         IDisposable Run(IGameField gameField);
     }
 }

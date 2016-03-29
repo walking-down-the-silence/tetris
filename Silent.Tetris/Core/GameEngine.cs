@@ -17,6 +17,7 @@ namespace Silent.Tetris.Core
         private IFigure _nextFigure;
         private IRandomGenerator<IFigure> _figureRandomGenerator;
         private Disposable _gameEdngineDisposable;
+        private int _currentScore;
 
         public GameEngine(IContainer container, ICommandBus commandBus)
         {
@@ -24,7 +25,7 @@ namespace Silent.Tetris.Core
             _commandBus = commandBus;
         }
 
-        public IGameField GameField => _gameField;
+        public event EventHandler<GameStateEventArgs> StateChanged;
 
         public IDisposable Run(IGameField gameField)
         {
@@ -33,9 +34,15 @@ namespace Silent.Tetris.Core
             _nextFigure = _figureRandomGenerator.GenerateNext();
             _gameField = gameField;
             _gameField.SetCurrentFigure(GenerateCurrentFigure());
+            OnStateChanged(new GameStateEventArgs(_gameField.CurrentFigure, _nextFigure, _currentScore));
             GenerateMoveDownCommandsAsync(500);
             ConsumeCommandsAsync();
             return _gameEdngineDisposable;
+        }
+
+        protected void OnStateChanged(GameStateEventArgs e)
+        {
+            StateChanged?.Invoke(this, e);
         }
 
         private void HandleCommand(ICommand command)
@@ -69,6 +76,8 @@ namespace Silent.Tetris.Core
                 IGround ground = _gameField.Ground.Merge(_gameField.CurrentFigure);
                 _gameField.SetCurrentFigure(currentFigure);
                 _gameField.SetGround(ground);
+                _currentScore = _currentScore + 1000;
+                OnStateChanged(new GameStateEventArgs(currentFigure, _nextFigure, _currentScore));
             }
             else if (allowedMovements.Contains(motionDirection))
             {
@@ -121,13 +130,6 @@ namespace Silent.Tetris.Core
                     HandleCommand(command);
                 }
             });
-        }
-
-        private bool IsInBounds(ISprite sprite)
-        {
-            return sprite.Position.Bottom >= _gameField.Position.Bottom
-                && sprite.Position.Left + sprite.Size.Width < _gameField.Position.Left + _gameField.Size.Width + 1
-                && sprite.Position.Left >= _gameField.Position.Left;
         }
 
         private sealed class Disposable : IDisposable

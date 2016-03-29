@@ -18,24 +18,26 @@ namespace Silent.Tetris.Core.Panels
         public RightInfoField(Position position, Size size) : base(position, size)
         {
             _symbolFactory = new SymbolFactory();
-            _scoreWordCharacters = _symbolFactory.Create("SCORE").ToList();
+
             _nextWordCharacters = _symbolFactory.Create("NEXT").ToList();
+            _scoreWordCharacters = _symbolFactory.Create("SCORE").ToList();
             SetScore(0);
 
             int initialPositionX = Position.Left + 1;
-            int initialPositionY = Position.Bottom + Size.Height / 2;
+            int initialPositionY = Size.Height - 2;
 
             PositionCharacters(initialPositionX, initialPositionY, _nextWordCharacters);
-            PositionCharacters(initialPositionX, initialPositionY - 6, _scoreWordCharacters);
-            PositionCharacters(initialPositionX, initialPositionY - 12, _scoreNumberCharacters);
+            PositionCharacters(initialPositionX, initialPositionY - 20, _scoreWordCharacters);
+            PositionCharacters(initialPositionX, initialPositionY - 26, _scoreNumberCharacters);
         }
 
         protected override IEnumerable<ISprite> GetSpriteCollection()
         {
-            return new ISprite[] { }
+            return new ISprite[] { _nextFigure }
                     .Concat(_scoreWordCharacters)
                     .Concat(_nextWordCharacters)
-                    .Concat(_scoreNumberCharacters);
+                    .Concat(_scoreNumberCharacters)
+                    .Where(x => x != null);
         }
 
         public IFigure NextFigure => _nextFigure;
@@ -43,7 +45,7 @@ namespace Silent.Tetris.Core.Panels
         public void AssignNextFigure(IFigure nextFigure)
         {
             int nextX = Position.Left + Size.Width / 2 - nextFigure.Size.Width / 2;
-            int nextY = Position.Bottom + Size.Height / 2 - nextFigure.Size.Height / 2;
+            int nextY = Size.Height - 15;
             _nextFigure = nextFigure.SetPosition(new Position(nextX, nextY));
         }
 
@@ -51,6 +53,7 @@ namespace Silent.Tetris.Core.Panels
         {
             _currentScore = currentScore;
             _scoreNumberCharacters = _symbolFactory.Create(currentScore.ToString()).ToList();
+            PositionCharacters(Position.Left + 1, Size.Height - 28, _scoreNumberCharacters);
         }
 
         private void PositionCharacters(int nextFigureFieldX, int nextFigureFieldY, IList<IFigure> characters)
