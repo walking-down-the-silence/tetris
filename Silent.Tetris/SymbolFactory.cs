@@ -8,7 +8,7 @@ using Silent.Tetris.Core.Letters;
 
 namespace Silent.Tetris
 {
-    public class SymbolFactory : IFactoryMethod<IEnumerable<IFigure>, string>
+    public class SymbolFactory : IFactory<IEnumerable<IFigure>, string>
     {
         private readonly IDictionary<char, Func<IFigure>> _letterSprites;
 

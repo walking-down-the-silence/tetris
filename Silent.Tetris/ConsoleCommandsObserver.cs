@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using Silent.Tetris.Commands;
 using Silent.Tetris.Contracts;
 
-namespace Silent.Tetris.Observers
+namespace Silent.Tetris
 {
-    public class GameEngineCommandsObserveAsync : IObserveAsync<ICommand>
+    public class ConsoleCommandsObserveAsync : IObserveAsync<ICommand>
     {
         private Disposable _disposable;
 
@@ -19,11 +18,12 @@ namespace Silent.Tetris.Observers
             {
                 while (!_disposable.IsDisposed)
                 {
-                    OnUpdate(new ConsoleCommand(ConsoleKey.DownArrow));
-                    Task.Delay(500).Wait();
+                    ConsoleKeyInfo keyInfo = Console.ReadKey();
+                    OnUpdate(new ConsoleCommand(keyInfo.Key));
                 }
             });
 
+            
             return _disposable;
         }
 

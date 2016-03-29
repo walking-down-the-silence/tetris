@@ -1,8 +1,6 @@
 using System;
-using Silent.Tetris.Commands;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Presenters;
-using Silent.Tetris.Observers;
 using Silent.Tetris.Views;
 
 namespace Silent.Tetris.Presenters

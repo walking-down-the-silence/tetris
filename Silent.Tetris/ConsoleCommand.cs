@@ -1,7 +1,7 @@
 ﻿using System;
 using Silent.Tetris.Contracts;
 
-namespace Silent.Tetris.Commands
+namespace Silent.Tetris
 {
     public class ConsoleCommand : ICommand
     {

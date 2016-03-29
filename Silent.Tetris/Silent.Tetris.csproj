@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandBus.cs" />
-    <Compile Include="Commands\ConsoleCommand.cs" />
+    <Compile Include="ConsoleCommand.cs" />
     <Compile Include="Contracts\ICommandBus.cs" />
     <Compile Include="Contracts\IContainer.cs" />
     <Compile Include="Contracts\IMessageBus.cs" />
@@ -57,14 +57,12 @@
     <Compile Include="Contracts\Panels\IGameFieldRow.cs" />
     <Compile Include="Contracts\ICommand.cs" />
     <Compile Include="Contracts\Handlers\ICommandHandler.cs" />
-    <Compile Include="Contracts\IFactoryMethod.cs" />
     <Compile Include="Contracts\Core\IFigure.cs" />
     <Compile Include="Contracts\Core\IGameEngine.cs" />
     <Compile Include="Contracts\Player.cs" />
     <Compile Include="Contracts\Presenters\IGamePresenter.cs" />
     <Compile Include="Contracts\Presenters\IHighScoresPresenter.cs" />
     <Compile Include="Contracts\Presenters\IHomePresenter.cs" />
-    <Compile Include="Contracts\Rendering\IGameFieldRenderable.cs" />
     <Compile Include="Contracts\Views\IGameView.cs" />
     <Compile Include="Contracts\Core\IGround.cs" />
     <Compile Include="Contracts\Handlers\IHander.cs" />
@@ -112,7 +110,7 @@
     <Compile Include="Core\MotionDetector.cs" />
     <Compile Include="Extensions\FigureTransformer.cs" />
     <Compile Include="NavigationService.cs" />
-    <Compile Include="Observers\ConsoleCommandsObserver.cs" />
+    <Compile Include="ConsoleCommandsObserver.cs" />
     <Compile Include="Contracts\ICloneable.cs" />
     <Compile Include="Core\Panels\GameField.cs" />
     <Compile Include="FigureFactory.cs" />
@@ -123,7 +121,6 @@
     <Compile Include="Core\Sprites\FigureS.cs" />
     <Compile Include="Core\Sprites\FigureX.cs" />
     <Compile Include="Contracts\IObserveAsync.cs" />
-    <Compile Include="Observers\GameEngineCommandsObserver.cs" />
     <Compile Include="Renderers\SpriteRenderer.cs" />
     <Compile Include="Views\GameView.cs" />
     <Compile Include="Presenters\GamePresenter.cs" />

@@ -8,7 +8,7 @@ namespace Silent.Tetris.Core.Panels
 {
     public class RightInfoField : FieldBase, IRightInfoField
     {
-        private readonly IFactoryMethod<IEnumerable<IFigure>, string> _symbolFactory;
+        private readonly IFactory<IEnumerable<IFigure>, string> _symbolFactory;
         private readonly IList<IFigure> _scoreWordCharacters;
         private readonly IList<IFigure> _nextWordCharacters;
         private IList<IFigure> _scoreNumberCharacters;

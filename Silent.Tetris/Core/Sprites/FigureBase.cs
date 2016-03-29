@@ -1,9 +1,10 @@
 using System;
+using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 
 namespace Silent.Tetris.Core.Sprites
 {
-    public abstract class FigureBase : IFigure
+    public abstract class FigureBase : IFigure, ICloneable<IFigure>
     {
         private readonly Color[,] _cells;
         private readonly Position _position;
@@ -22,7 +23,7 @@ namespace Silent.Tetris.Core.Sprites
 
         public Size Size => _size;
 
-        public virtual IFigure Clone(params object[] parameters)
+        public IFigure Clone(params object[] parameters)
         {
             return Activator.CreateInstance(GetType(), parameters) as IFigure;
         }
@@ -33,7 +34,7 @@ namespace Silent.Tetris.Core.Sprites
             return cloned;
         }
 
-        public virtual IFigure Rotate(RotateDirection rotateDirection)
+        public IFigure Rotate(RotateDirection rotateDirection)
         {
             Color[,] newArray;
 
