@@ -4,7 +4,7 @@ using Silent.Tetris.Contracts;
 
 namespace Silent.Tetris
 {
-    public class GameIocContainer : IContainer
+    public class ServiceLocator : IContainer
     {
         private readonly IDictionary<Tuple<Type, string>, Func<IContainer, object>> _registeredFactories = new Dictionary<Tuple<Type, string>, Func<IContainer, object>>();
 

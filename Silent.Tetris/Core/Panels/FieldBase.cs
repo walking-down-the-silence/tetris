@@ -53,7 +53,8 @@ namespace Silent.Tetris.Core.Panels
                     if (xPosition >= 0 && 
                         xPosition < colorView.GetLength(1) && 
                         yPosition >= 0 &&
-                        yPosition < colorView.GetLength(0))
+                        yPosition < colorView.GetLength(0) &&
+                        sprite[i, j] != Color.Transparent)
                     {
                         colorView[yPosition, xPosition] = sprite[i, j];
                     }

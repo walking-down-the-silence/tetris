@@ -53,7 +53,7 @@
     <Compile Include="Contracts\Panels\IRightInfoField.cs" />
     <Compile Include="Core\Panels\FieldBase.cs" />
     <Compile Include="Core\Panels\RightInfoField.cs" />
-    <Compile Include="GameIocContainer.cs" />
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="Renderers\ConsoleHelper.cs" />
     <Compile Include="Contracts\Core\Color.cs" />
     <Compile Include="Contracts\Panels\IGameFieldRow.cs" />

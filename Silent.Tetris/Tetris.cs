@@ -30,7 +30,7 @@ namespace Silent.Tetris
 
         private static IContainer BuildServiceLocator()
         {
-            IContainer gameContainer = new GameIocContainer();
+            IContainer gameContainer = new ServiceLocator();
             gameContainer.Register<IConfiguration>(BuildConsoleConfiguration("Tetris"));
             gameContainer.Register<INavigationService>(new NavigationService());
             gameContainer.Register<ISpriteRenderable>(container => new SpriteRenderer());
