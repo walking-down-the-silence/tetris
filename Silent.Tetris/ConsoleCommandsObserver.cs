@@ -18,7 +18,7 @@ namespace Silent.Tetris
             {
                 while (!_disposable.IsDisposed)
                 {
-                    ConsoleKeyInfo keyInfo = Console.ReadKey();
+                    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                     OnUpdate(new ConsoleCommand(keyInfo.Key));
                 }
             });

@@ -34,7 +34,7 @@ namespace Silent.Tetris
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
 
-                using (StreamReader reader = new StreamReader(_filename))
+                using (StreamReader reader = File.OpenText(_filename))
                 {
                     _playerScores = (List<Player>)serializer.Deserialize(reader);
                     _playerScores.Sort(new PlayerComparer());
@@ -47,7 +47,7 @@ namespace Silent.Tetris
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
 
-            using (StreamWriter writer = new StreamWriter(_filename))
+            using (StreamWriter writer = new StreamWriter(File.Open(_filename, FileMode.Create)))
             {
                 serializer.Serialize(writer, _playerScores);
             }
