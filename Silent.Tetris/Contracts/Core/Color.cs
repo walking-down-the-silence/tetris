@@ -1,5 +1,8 @@
 ﻿namespace Silent.Tetris.Contracts.Core
 {
+    /// <summary>
+    /// Colors enumeration used for rendering
+    /// </summary>
     public enum Color
     {
         Transparent,
