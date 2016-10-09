@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Silent.Tetris.Contracts
 {
@@ -8,6 +9,11 @@ namespace Silent.Tetris.Contracts
     public interface IContainer
     {
         /// <summary>
+        /// Gets the collection with registered types.
+        /// </summary>
+        ICollection<Tuple<Type, string>> Registrations { get; }
+
+            /// <summary>
         /// Resolves requested service.
         /// </summary>
         /// <typeparam name="TService"> The type of service. </typeparam>

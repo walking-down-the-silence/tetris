@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Silent.Tetris.Contracts;
 
 namespace Silent.Tetris
@@ -7,6 +8,8 @@ namespace Silent.Tetris
     public class ServiceLocator : IContainer
     {
         private readonly IDictionary<Tuple<Type, string>, Func<IContainer, object>> _registeredFactories = new Dictionary<Tuple<Type, string>, Func<IContainer, object>>();
+
+        public ICollection<Tuple<Type, string>> Registrations => _registeredFactories.Keys.ToList();
 
         public TService Resolve<TService>() where TService : class
         {
