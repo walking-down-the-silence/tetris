@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Silent.Tetris.Contracts;
 
 namespace Silent.Tetris
 {
-    public class XmlRepository : IRepository<Player>
+    public class JsonRepository : IRepository<Player>
     {
         private readonly string _filename;
         private List<Player> _playerScores;
 
-        public XmlRepository(string filename)
+        public JsonRepository(string filename)
         {
             _filename = filename;
         }
@@ -32,25 +32,17 @@ namespace Silent.Tetris
         {
             if (File.Exists(_filename))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
-
-                using (StreamReader reader = File.OpenText(_filename))
-                {
-                    _playerScores = (List<Player>)serializer.Deserialize(reader);
-                    _playerScores.Sort(new PlayerComparer());
-                    _playerScores = _playerScores.Take(10).ToList();
-                }
+                string text = File.ReadAllText(_filename);
+                _playerScores = JsonConvert.DeserializeObject<List<Player>>(text);
+                _playerScores.Sort(new PlayerComparer());
+                _playerScores = _playerScores.Take(10).ToList();
             }
         }
 
         public void Save()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
-
-            using (StreamWriter writer = new StreamWriter(File.Open(_filename, FileMode.Create)))
-            {
-                serializer.Serialize(writer, _playerScores);
-            }
+            string text = JsonConvert.SerializeObject(_playerScores);
+            File.WriteAllText(_filename, text);
         }
 
         private void InvalidatePlayerList()
