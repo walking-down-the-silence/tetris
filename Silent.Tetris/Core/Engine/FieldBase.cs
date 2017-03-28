@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris.Core.Sprites
+namespace Silent.Tetris.Core.Engine
 {
     public abstract class FieldBase : IField
     {

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
-using Silent.Tetris.Core.Sprites;
+using Silent.Tetris.Core.Figures;
 using Silent.Tetris.Extensions;
 
 namespace Silent.Tetris.Core.Engine
 {
     public class GameEngine : IGameEngine
     {
+        private const int LayoutMargin = 1;
+        private const int RightPanelWidth = 20;
         private readonly IContainer _container;
         private readonly ICommandBus _commandBus;
         private readonly MotionDetector _motionDetector = new MotionDetector();
@@ -32,15 +34,15 @@ namespace Silent.Tetris.Core.Engine
 
         public event EventHandler<GameStateEventArgs> StateChanged;
 
-        public IDisposable Run(IGameField gameField, IGameState gameState)
+        public IDisposable Run()
         {
             _gameEdngineDisposable = new Disposable();
             _figureRandomGenerator = _container.Resolve<IRandomGenerator<IFigure>>();
             _nextFigure = _figureRandomGenerator.GenerateNext();
-            _gameField = gameField;
+            _gameField = InitializeGameField();
             _gameField.SetCurrentFigure(GenerateCurrentFigure());
 
-            _gameState = gameState;
+            _gameState = InitializeRightInfoField();
 
             ChangeState(_gameField.CurrentFigure, _nextFigure, _currentScore);
             GenerateMoveDownCommandsAsync(500);
@@ -121,6 +123,22 @@ namespace Silent.Tetris.Core.Engine
             IFigure currentFigure = _nextFigure.SetPosition(new Position(currentX, currentY));
             _nextFigure = _figureRandomGenerator.GenerateNext();
             return currentFigure;
+        }
+
+        private IGameState InitializeRightInfoField()
+        {
+            IConfiguration configuration = _container.Resolve<IConfiguration>();
+            int gameStateLeft = _gameField.Position.Left + configuration.GameFieldSize.Width + 1;
+            Position gameStatePosition = new Position(gameStateLeft, 0);
+            Size gameStateSize = new Size(RightPanelWidth, configuration.GameFieldSize.Height);
+            return new GameState(gameStatePosition, gameStateSize);
+        }
+
+        private IGameField InitializeGameField()
+        {
+            IConfiguration configuration = _container.Resolve<IConfiguration>();
+            Position gameFieldPosition = new Position(LayoutMargin, 0);
+            return new GameField(gameFieldPosition, configuration.GameFieldSize);
         }
 
         private void GenerateMoveDownCommandsAsync(int delay)

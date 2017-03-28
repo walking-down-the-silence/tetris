@@ -2,7 +2,7 @@ using System;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris.Core.Sprites
+namespace Silent.Tetris.Core.Figures
 {
     public abstract class FigureBase : IFigure, ICloneable<IFigure>
     {

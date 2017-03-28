@@ -1,6 +1,6 @@
 ﻿using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris.Core.Sprites
+namespace Silent.Tetris.Core.Figures
 {
     public sealed class FigureI : FigureBase
     {

@@ -27,7 +27,7 @@ namespace Silent.Tetris.Presenters
             _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
         }
 
-        public void Handle(object sender, ICommand command)
+        private void Handle(object sender, ICommand command)
         {
             ConsoleCommand consoleCommand = (ConsoleCommand)command;
 

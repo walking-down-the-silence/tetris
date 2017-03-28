@@ -1,4 +1,5 @@
-﻿using Silent.Tetris.Contracts.Presenters;
+﻿using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Contracts.Presenters;
 
 namespace Silent.Tetris.Contracts.Views
 {

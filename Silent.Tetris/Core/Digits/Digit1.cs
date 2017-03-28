@@ -1,5 +1,5 @@
 using Silent.Tetris.Contracts.Core;
-using Silent.Tetris.Core.Sprites;
+using Silent.Tetris.Core.Figures;
 
 namespace Silent.Tetris.Core.Digits
 {

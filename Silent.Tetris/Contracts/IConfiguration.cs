@@ -15,7 +15,7 @@ namespace Silent.Tetris.Contracts
         /// <summary>
         /// Gets the size of the window.
         /// </summary>
-        Size Size { get; }
+        Size GameFieldSize { get; }
 
         /// <summary>
         /// Gets the title for window.

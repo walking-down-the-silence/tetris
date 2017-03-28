@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Silent.Tetris.Contracts;
-using Silent.Tetris.Core.Sprites;
+using Silent.Tetris.Core.Figures;
 
 namespace Silent.Tetris.Core.Engine
 {

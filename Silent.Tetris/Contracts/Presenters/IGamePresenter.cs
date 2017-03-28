@@ -8,13 +8,13 @@ namespace Silent.Tetris.Contracts.Presenters
     public interface IGamePresenter : IPresenter
     {
         /// <summary>
-        /// Gets the game field as <see cref="IField"/>.
+        /// Gets the current game field.
         /// </summary>
-        IField GameField { get; }
+        IGameField Field { get; }
 
         /// <summary>
-        /// Gets the info field as <see cref="IField"/>.
+        /// Gets the current game state.
         /// </summary>
-        IField RightInfoField { get; }
+        IGameState State { get; }
     }
 }

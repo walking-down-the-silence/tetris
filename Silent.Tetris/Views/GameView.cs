@@ -34,8 +34,8 @@ namespace Silent.Tetris.Views
 
         public void Render()
         {
-            _gameFieldRenderable.Render(Presenter.GameField.GetView());
-            _gameFieldRenderable.Render(Presenter.RightInfoField.GetView());
+            _gameFieldRenderable.Render(Presenter.Field.GetView());
+            _gameFieldRenderable.Render(Presenter.State.GetView());
         }
     }
 }

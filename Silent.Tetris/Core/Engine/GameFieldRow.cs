@@ -1,7 +1,7 @@
 using System.Linq;
 using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris.Core.Sprites
+namespace Silent.Tetris.Core.Engine
 {
     public class GameFieldRow : IGameFieldRow
     {
