@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Silent.Tetris.Contracts;
 
-namespace Silent.Tetris
+namespace Silent.Tetris.Core.Engine
 {
     public class ConsoleCommandsObserveAsync : IObserveAsync<ICommand>
     {

@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Silent.Tetris.Contracts.Core;
-using Silent.Tetris.Contracts.Panels;
-using Silent.Tetris.Core.Sprites;
 
-namespace Silent.Tetris.Core.Panels
+namespace Silent.Tetris.Core.Sprites
 {
     public class GameField : FieldBase, IGameField
     {
@@ -13,7 +11,8 @@ namespace Silent.Tetris.Core.Panels
 
         public GameField(Position position, Size size) : base(position, size)
         {
-            _ground = new GoundFigure(position, size);
+            Size groundFiegureDefaultSize = new Size(10, 22);
+            _ground = new GoundFigure(position, groundFiegureDefaultSize);
         }
 
         public IFigure CurrentFigure => _currentFigure;

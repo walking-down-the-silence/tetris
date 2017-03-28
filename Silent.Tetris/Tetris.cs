@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Rendering;
+using Silent.Tetris.Core.Engine;
 using Silent.Tetris.Renderers;
 using Silent.Tetris.Views;
 
@@ -37,7 +38,7 @@ namespace Silent.Tetris
             gameContainer.Register<IFactory<IFigure>>(container => new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(container => new FigureRandomGenerator(container.Resolve<IFactory<IFigure>>()));
             gameContainer.Register<ICommandBus>(new CommandBus());
-            gameContainer.Register<IRepository<Player>>(container => new JsonRepository("highscores.xml"));
+            gameContainer.Register<IRepository<Player>>(container => new JsonRepository("highscores.json"));
             return gameContainer;
         }
 
@@ -57,7 +58,7 @@ namespace Silent.Tetris
 
         private static IConfiguration BuildConsoleConfiguration(string title)
         {
-            return new GameConsoleConfiguration(new Position(10, 10), new Size(50, 40), title);
+            return new GameConsoleConfiguration(new Position(10, 10), new Size(36, 24), title);
         }
 
         private class GameConsoleConfiguration : IConfiguration

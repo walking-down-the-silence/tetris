@@ -1,4 +1,4 @@
-using Silent.Tetris.Contracts.Panels;
+using Silent.Tetris.Contracts.Core;
 
 namespace Silent.Tetris.Contracts.Presenters
 {

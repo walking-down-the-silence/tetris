@@ -1,10 +1,10 @@
 ﻿using System;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
-using Silent.Tetris.Contracts.Panels;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Core;
-using Silent.Tetris.Core.Panels;
+using Silent.Tetris.Core.Engine;
+using Silent.Tetris.Core.Sprites;
 using Silent.Tetris.Views;
 
 namespace Silent.Tetris.Presenters
@@ -17,7 +17,7 @@ namespace Silent.Tetris.Presenters
         private readonly IContainer _container;
         private readonly GameView _gameView;
         private IGameField _gameField;
-        private IRightInfoField _rightInfoField;
+        private IGameState _gameInfo;
         private GameEngine _gameEngine;
         private ICommandBus _commandBus;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
@@ -37,8 +37,7 @@ namespace Silent.Tetris.Presenters
 
             _commandBus = _container.Resolve<ICommandBus>();
             _gameEngine = new GameEngine(_container, _commandBus);
-            _gameEngine.StateChanged += GameEngineOnStateChanged;
-            _gameEngineDisposable = _gameEngine.Run(_gameField);
+            _gameEngineDisposable = _gameEngine.Run(_gameField, _gameInfo);
 
             _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
             _consoleCommandObserveAsync.Update += Handle;
@@ -47,15 +46,15 @@ namespace Silent.Tetris.Presenters
 
         public IField GameField => _gameField;
 
-        public IField RightInfoField => _rightInfoField;
+        public IField RightInfoField => _gameInfo;
 
         private void InitializeRightInfoField()
         {
-            int rightFieldLeft = _gameView.Size.Width - RightPanelWidth - 1;
+            int rightFieldLeft = _gameField.Position.Left + _gameField.Size.Width + 1;
             int rightFieldWidth = RightPanelWidth;
             Position rightFieldPosition = new Position(rightFieldLeft, 0);
             Size rightFieldSize = new Size(rightFieldWidth, _gameView.Size.Height);
-            _rightInfoField = new RightInfoField(rightFieldPosition, rightFieldSize);
+            _gameInfo = new GameState(rightFieldPosition, rightFieldSize);
         }
 
         private void InitializeGameField()
@@ -63,8 +62,8 @@ namespace Silent.Tetris.Presenters
             int gameFieldLeft = LeftPanelWidth + LayoutMargin;
             int gameFieldWidth = _gameView.Size.Width - RightPanelWidth - LeftPanelWidth - LayoutMargin * 2;
             Position gameFieldPosition = new Position(gameFieldLeft, 0);
-            Size gameFieldSize = new Size(gameFieldWidth, _gameView.Size.Height);
-            _gameField = new GameField(gameFieldPosition, gameFieldSize);
+            Size gameFieldDefaultSize = new Size(12, 24);
+            _gameField = new GameField(gameFieldPosition, gameFieldDefaultSize);
         }
 
         private void Handle(object sender, ICommand command)
@@ -84,12 +83,6 @@ namespace Silent.Tetris.Presenters
                     _commandBus.Add(command);
                     break;
             }
-        }
-
-        private void GameEngineOnStateChanged(object sender, GameStateEventArgs gameStateEventArgs)
-        {
-            _rightInfoField.AssignNextFigure(gameStateEventArgs.NextFigure);
-            _rightInfoField.SetScore(gameStateEventArgs.CurrentScore);
         }
     }
 }

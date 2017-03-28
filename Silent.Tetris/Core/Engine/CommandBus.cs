@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using Silent.Tetris.Contracts;
 
-namespace Silent.Tetris
+namespace Silent.Tetris.Core.Engine
 {
     public class CommandBus : ICommandBus
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 
-namespace Silent.Tetris
+namespace Silent.Tetris.Core.Engine
 {
     public class FigureRandomGenerator : IRandomGenerator<IFigure>, IDisposable
     {

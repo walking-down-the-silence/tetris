@@ -1,6 +1,5 @@
 using System.Linq;
 using Silent.Tetris.Contracts.Core;
-using Silent.Tetris.Contracts.Panels;
 
 namespace Silent.Tetris.Core.Sprites
 {

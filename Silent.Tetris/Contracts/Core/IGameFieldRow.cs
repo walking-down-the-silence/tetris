@@ -1,6 +1,4 @@
-using Silent.Tetris.Contracts.Core;
-
-namespace Silent.Tetris.Contracts.Panels
+namespace Silent.Tetris.Contracts.Core
 {
     /// <summary>
     /// Represents the single row for the <see cref="IGround"/> figure.

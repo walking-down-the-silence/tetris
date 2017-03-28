@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
-using Silent.Tetris.Contracts.Panels;
+using Silent.Tetris.Core.Sprites;
 using Silent.Tetris.Extensions;
 
-namespace Silent.Tetris.Core
+namespace Silent.Tetris.Core.Engine
 {
     public class GameEngine : IGameEngine
     {
@@ -14,6 +14,7 @@ namespace Silent.Tetris.Core
         private readonly ICommandBus _commandBus;
         private readonly MotionDetector _motionDetector = new MotionDetector();
         private IGameField _gameField;
+        private IGameState _gameState;
         private IFigure _nextFigure;
         private IRandomGenerator<IFigure> _figureRandomGenerator;
         private Disposable _gameEdngineDisposable;
@@ -25,16 +26,23 @@ namespace Silent.Tetris.Core
             _commandBus = commandBus;
         }
 
+        public IGameField Field => _gameField;
+
+        public IGameState State => _gameState;
+
         public event EventHandler<GameStateEventArgs> StateChanged;
 
-        public IDisposable Run(IGameField gameField)
+        public IDisposable Run(IGameField gameField, IGameState gameState)
         {
             _gameEdngineDisposable = new Disposable();
             _figureRandomGenerator = _container.Resolve<IRandomGenerator<IFigure>>();
             _nextFigure = _figureRandomGenerator.GenerateNext();
             _gameField = gameField;
             _gameField.SetCurrentFigure(GenerateCurrentFigure());
-            OnStateChanged(new GameStateEventArgs(_gameField.CurrentFigure, _nextFigure, _currentScore));
+
+            _gameState = gameState;
+
+            ChangeState(_gameField.CurrentFigure, _nextFigure, _currentScore);
             GenerateMoveDownCommandsAsync(500);
             ConsumeCommandsAsync();
             return _gameEdngineDisposable;
@@ -43,6 +51,13 @@ namespace Silent.Tetris.Core
         protected void OnStateChanged(GameStateEventArgs e)
         {
             StateChanged?.Invoke(this, e);
+        }
+
+        private void ChangeState(IFigure currentFigure, IFigure nextFigure, int currentScore)
+        {
+            State.AssignNextFigure(nextFigure);
+            State.SetScore(currentScore);
+            OnStateChanged(new GameStateEventArgs(currentFigure, nextFigure, currentScore));
         }
 
         private void HandleCommand(ICommand command)
@@ -77,7 +92,7 @@ namespace Silent.Tetris.Core
                 _gameField.SetCurrentFigure(currentFigure);
                 _gameField.SetGround(ground);
                 _currentScore = _currentScore + 1000;
-                OnStateChanged(new GameStateEventArgs(currentFigure, _nextFigure, _currentScore));
+                ChangeState(currentFigure, _nextFigure, _currentScore);
             }
             else if (allowedMovements.Contains(motionDirection))
             {
