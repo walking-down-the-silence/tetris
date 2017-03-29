@@ -47,6 +47,14 @@ namespace Silent.Tetris.Presenters
                     _commandObserverDisposable.Dispose();
                     _navigationService.Navigate(new HomeView(_container));
                     break;
+                case ConsoleKey.Enter:
+                    if(_gameEngine.IsGameOver())
+                    {
+                        _gameEngineDisposable.Dispose();
+                        _commandObserverDisposable.Dispose();
+                        _navigationService.Navigate(new HighScoresView(_container));
+                    }
+                    break;
                 case ConsoleKey.LeftArrow:
                     _gameEngine.MoveCurrentFigure(MotionDirection.Left);
                     break;

@@ -45,8 +45,31 @@ namespace Silent.Tetris.Core.Engine
             return _gameEngineDisposable;
         }
 
+        public bool IsGameOver()
+        {
+            if (_gameField.Ground.Size.Height >= _gameField.Size.Height)
+            {
+                int y = _gameField.Size.Height - 1;
+
+                for (int i = 0; i < _gameField.Size.Width; i++)
+                {
+                    if(_gameField.Ground[i, y] != Color.Transparent)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public void MoveCurrentFigure(MotionDirection motionDirection)
         {
+            if(IsGameOver())
+            {
+                return;
+            }
+
             HashSet<MotionDirection> allowedMovements = _motionDetector.DetectAllowedMotion(_gameField.Ground, _gameField.CurrentFigure);
 
             if (motionDirection == MotionDirection.Down && !allowedMovements.Contains(motionDirection))
@@ -56,9 +79,10 @@ namespace Silent.Tetris.Core.Engine
 
                 _gameField.SetCurrentFigure(currentFigure);
                 _gameField.SetGround(ground);
+                int rowsCompleted = _gameField.Ground.Clean();
 
                 _gameState.AssignNextFigure(_figureRandomGenerator.GenerateNext());
-                _gameState.SetScore(_gameState.CurrentScore + 1000);
+                _gameState.SetScore(_gameState.CurrentScore + 100 * rowsCompleted);
             }
             else if (allowedMovements.Contains(motionDirection))
             {
@@ -112,7 +136,7 @@ namespace Silent.Tetris.Core.Engine
         {
             Task.Run(() =>
             {
-                while (!_gameEngineDisposable.IsDisposed)
+                while (!_gameEngineDisposable.IsDisposed && !IsGameOver())
                 {
                     MoveCurrentFigure(MotionDirection.Down);
                     Task.Delay(delay).Wait();

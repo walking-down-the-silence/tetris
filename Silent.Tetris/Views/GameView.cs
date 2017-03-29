@@ -16,6 +16,7 @@ namespace Silent.Tetris.Views
         {
             _container = container;
             _gameFieldRenderable = container.Resolve<ISpriteRenderable>();
+            Size = Size.None;
         }
 
         public INavigationService NavigationService { get; private set; }
