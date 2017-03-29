@@ -6,11 +6,6 @@
     public interface IGameState : IField
     {
         /// <summary>
-        /// Gets the current <see cref="IFigure"/> that is in game field.
-        /// </summary>
-        IFigure CurrentFigure { get; }
-
-        /// <summary>
         /// Gets the next <see cref="IFigure"/> that will be in game field.
         /// </summary>
         IFigure NextFigure { get; }

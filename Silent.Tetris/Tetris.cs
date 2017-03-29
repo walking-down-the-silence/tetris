@@ -64,7 +64,8 @@ namespace Silent.Tetris
 
         private static IConfiguration BuildConsoleConfiguration(string title)
         {
-            return new GameConsoleConfiguration(new Position(10, 10), new Size(12, 24), title);
+            Size gameFieldDefaultSize = new Size(10, 22);
+            return new GameConsoleConfiguration(new Position(10, 10), gameFieldDefaultSize, title);
         }
 
         private class GameConsoleConfiguration : IConfiguration

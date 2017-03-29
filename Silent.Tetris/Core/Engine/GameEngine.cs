@@ -10,15 +10,13 @@ namespace Silent.Tetris.Core.Engine
     public class GameEngine : IGameEngine
     {
         private const int LayoutMargin = 1;
-        private const int RightPanelWidth = 24;
+        private const int RightPanelWidth = 22;
         private readonly IContainer _container;
         private readonly MotionDetector _motionDetector = new MotionDetector();
         private IGameField _gameField;
         private IGameState _gameState;
-        private IFigure _nextFigure;
         private IRandomGenerator<IFigure> _figureRandomGenerator;
-        private Disposable _gameEdngineDisposable;
-        private int _currentScore;
+        private Disposable _gameEngineDisposable;
 
         public GameEngine(IContainer container)
         {
@@ -33,17 +31,18 @@ namespace Silent.Tetris.Core.Engine
 
         public IDisposable Run()
         {
-            _gameEdngineDisposable = new Disposable();
+            _gameEngineDisposable = new Disposable();
             _figureRandomGenerator = _container.Resolve<IRandomGenerator<IFigure>>();
-            _nextFigure = _figureRandomGenerator.GenerateNext();
+
+            _gameState = InitializeGameStateField();
+            _gameState.AssignNextFigure(_figureRandomGenerator.GenerateNext());
+            _gameState.SetScore(0);
+
             _gameField = InitializeGameField();
             _gameField.SetCurrentFigure(GenerateCurrentFigure());
 
-            _gameState = InitializeRightInfoField();
-
-            ChangeState(_gameField.CurrentFigure, _nextFigure, _currentScore);
             GenerateMoveDownCommandsAsync(500);
-            return _gameEdngineDisposable;
+            return _gameEngineDisposable;
         }
 
         public void MoveCurrentFigure(MotionDirection motionDirection)
@@ -52,12 +51,14 @@ namespace Silent.Tetris.Core.Engine
 
             if (motionDirection == MotionDirection.Down && !allowedMovements.Contains(motionDirection))
             {
-                IFigure currentFigure = GenerateCurrentFigure();
                 IGround ground = _gameField.Ground.Merge(_gameField.CurrentFigure);
+                IFigure currentFigure = GenerateCurrentFigure();
+
                 _gameField.SetCurrentFigure(currentFigure);
                 _gameField.SetGround(ground);
-                _currentScore = _currentScore + 1000;
-                ChangeState(currentFigure, _nextFigure, _currentScore);
+
+                _gameState.AssignNextFigure(_figureRandomGenerator.GenerateNext());
+                _gameState.SetScore(_gameState.CurrentScore + 1000);
             }
             else if (allowedMovements.Contains(motionDirection))
             {
@@ -84,28 +85,19 @@ namespace Silent.Tetris.Core.Engine
             StateChanged?.Invoke(this, e);
         }
 
-        private void ChangeState(IFigure currentFigure, IFigure nextFigure, int currentScore)
-        {
-            State.AssignNextFigure(nextFigure);
-            State.SetScore(currentScore);
-            OnStateChanged(new GameStateEventArgs(currentFigure, nextFigure, currentScore));
-        }
-
         private IFigure GenerateCurrentFigure()
         {
-            int currentX = _gameField.Ground.Size.Width / 2 - _nextFigure.Size.Width / 2;
-            int currentY = _gameField.Ground.Size.Height - _nextFigure.Size.Height;
-            IFigure currentFigure = _nextFigure.SetPosition(new Position(currentX, currentY));
-            _nextFigure = _figureRandomGenerator.GenerateNext();
-            return currentFigure;
+            int currentX = _gameField.Ground.Size.Width / 2 - _gameState.NextFigure.Size.Width / 2;
+            int currentY = _gameField.Ground.Size.Height - _gameState.NextFigure.Size.Height;
+            return _gameState.NextFigure.SetPosition(new Position(currentX, currentY));
         }
 
-        private IGameState InitializeRightInfoField()
+        private IGameState InitializeGameStateField()
         {
             IConfiguration configuration = _container.Resolve<IConfiguration>();
-            int gameStateLeft = _gameField.Position.Left + configuration.GameFieldSize.Width + 1;
-            Position gameStatePosition = new Position(gameStateLeft, 0);
+            int gameStateLeft = LayoutMargin + configuration.GameFieldSize.Width + 1;
             Size gameStateSize = new Size(RightPanelWidth, configuration.GameFieldSize.Height);
+            Position gameStatePosition = new Position(gameStateLeft, 0);
             return new GameState(gameStatePosition, gameStateSize);
         }
 
@@ -120,7 +112,7 @@ namespace Silent.Tetris.Core.Engine
         {
             Task.Run(() =>
             {
-                while (!_gameEdngineDisposable.IsDisposed)
+                while (!_gameEngineDisposable.IsDisposed)
                 {
                     MoveCurrentFigure(MotionDirection.Down);
                     Task.Delay(delay).Wait();

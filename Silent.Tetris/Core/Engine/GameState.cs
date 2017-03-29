@@ -13,7 +13,6 @@ namespace Silent.Tetris.Core.Engine
         private readonly IFactory<IEnumerable<IFigure>, string> _symbolFactory;
         private readonly IList<IFigure> _scoreWordCharacters;
         private IList<IFigure> _scoreNumberCharacters;
-        private int _currentScore;
 
         /// <summary>
         /// Creates new instance of game state event arguments
@@ -28,13 +27,10 @@ namespace Silent.Tetris.Core.Engine
             SetScore(0);
 
             int initialPositionX = Position.Left + 1;
-            int initialPositionY = Size.Height - 2;
 
-            PositionCharacters(initialPositionX, initialPositionY - 8, _scoreWordCharacters);
-            PositionCharacters(initialPositionX, initialPositionY - 16, _scoreNumberCharacters);
+            PositionCharacters(initialPositionX, Size.Height - 8, _scoreWordCharacters);
+            PositionCharacters(initialPositionX, Size.Height - 16, _scoreNumberCharacters);
         }
-
-        public IFigure CurrentFigure { get; private set; }
 
         public IFigure NextFigure { get; private set; }
 
@@ -51,15 +47,15 @@ namespace Silent.Tetris.Core.Engine
         public void AssignNextFigure(IFigure nextFigure)
         {
             int nextX = Position.Left + Size.Width / 2 - nextFigure.Size.Width / 2;
-            int nextY = Size.Height - 7;
+            int nextY = Size.Height - 5;
             NextFigure = nextFigure.SetPosition(new Position(nextX, nextY));
         }
 
         public void SetScore(int currentScore)
         {
-            _currentScore = currentScore;
+            CurrentScore = currentScore;
             _scoreNumberCharacters = _symbolFactory.Create(currentScore.ToString()).ToList();
-            PositionCharacters(Position.Left + 1, Size.Height - 18, _scoreNumberCharacters);
+            PositionCharacters(Position.Left + 1, Size.Height - 16, _scoreNumberCharacters);
         }
 
         private void PositionCharacters(int nextFigureFieldX, int nextFigureFieldY, IList<IFigure> characters)
