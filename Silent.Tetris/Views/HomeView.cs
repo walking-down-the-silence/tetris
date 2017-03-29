@@ -11,8 +11,8 @@ namespace Silent.Tetris.Views
     {
         private readonly IContainer _container;
 
-        public HomeView(Size size, IContainer container) : base(
-            size,
+        public HomeView(IContainer container) : base(
+            new Size(12, 24), 
             new[]
             {
                 MenuOptions.StartGame,

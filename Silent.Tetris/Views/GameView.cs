@@ -12,24 +12,27 @@ namespace Silent.Tetris.Views
         private readonly IContainer _container;
         private readonly ISpriteRenderable _gameFieldRenderable;
 
-        public GameView(Size size, IContainer container)
+        public GameView(IContainer container)
         {
-            Size = size;
             _container = container;
             _gameFieldRenderable = container.Resolve<ISpriteRenderable>();
         }
 
         public INavigationService NavigationService { get; private set; }
 
-        public Size Size { get; }
+        public Size Size { get; private set; }
 
         public IGamePresenter Presenter { get; private set; }
 
         public void Initialize(INavigationService navigationService)
         {
             NavigationService = navigationService;
-            Presenter = new GamePresenter(this, _container);
+            Presenter = new GamePresenter(navigationService, _container);
             Presenter.Initialize();
+
+            int width = Presenter.Field.Size.Width + Presenter.State.Size.Width;
+            int height = Presenter.Field.Size.Height;
+            Size = new Size(width, height);
         }
 
         public void Render()

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Rendering;
+using Silent.Tetris.Contracts.Views;
 using Silent.Tetris.Core.Engine;
 using Silent.Tetris.Renderers;
 using Silent.Tetris.Views;
@@ -17,13 +18,15 @@ namespace Silent.Tetris
 
             IContainer gameServiceLocator = BuildServiceLocator();
             IConfiguration gameConfiguration = gameServiceLocator.Resolve<IConfiguration>();
-            Initialize(gameConfiguration);
+            IView homeView = new HomeView(gameServiceLocator);
+            Initialize(gameConfiguration, homeView);
 
             INavigationService navigationService = gameServiceLocator.Resolve<INavigationService>();
-            navigationService.Navigate(new HomeView(gameConfiguration.GameFieldSize, gameServiceLocator));
+            navigationService.Navigate(homeView);
 
             while (navigationService.CurrentView != null)
             {
+                Initialize(gameConfiguration, navigationService.CurrentView);
                 navigationService.CurrentView.Render();
                 Task.Delay(100).Wait();
             }
@@ -37,7 +40,6 @@ namespace Silent.Tetris
             gameContainer.Register<ISpriteRenderable>(container => new SpriteRenderer());
             gameContainer.Register<IFactory<IFigure>>(container => new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(container => new FigureRandomGenerator(container.Resolve<IFactory<IFigure>>()));
-            gameContainer.Register<ICommandBus>(new CommandBus());
             gameContainer.Register<IRepository<Player>>(container => new JsonRepository("highscores.json"));
             return gameContainer;
         }
@@ -48,10 +50,14 @@ namespace Silent.Tetris
             Console.WriteLine(eventArgs.Exception.Flatten());
         }
 
-        private static void Initialize(IConfiguration configuration)
+        private static void Initialize(IConfiguration configuration, IView currentView)
         {
-            Console.SetWindowSize(configuration.GameFieldSize.Width * 2 + 46, configuration.GameFieldSize.Height);
-            Console.SetBufferSize(configuration.GameFieldSize.Width * 2 + 46, configuration.GameFieldSize.Height);
+            if (currentView.Size.Width * 2 != Console.WindowWidth || currentView.Size.Height != Console.WindowHeight)
+            {
+                Console.SetWindowSize(currentView.Size.Width * 2, currentView.Size.Height);
+                Console.SetBufferSize(currentView.Size.Width * 2, currentView.Size.Height);
+            }
+
             Console.CursorVisible = false;
             Console.Title = configuration.Title;
         }

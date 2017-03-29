@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
-using Silent.Tetris.Core.Figures;
 using Silent.Tetris.Extensions;
 
 namespace Silent.Tetris.Core.Engine
@@ -11,9 +10,8 @@ namespace Silent.Tetris.Core.Engine
     public class GameEngine : IGameEngine
     {
         private const int LayoutMargin = 1;
-        private const int RightPanelWidth = 20;
+        private const int RightPanelWidth = 24;
         private readonly IContainer _container;
-        private readonly ICommandBus _commandBus;
         private readonly MotionDetector _motionDetector = new MotionDetector();
         private IGameField _gameField;
         private IGameState _gameState;
@@ -22,10 +20,9 @@ namespace Silent.Tetris.Core.Engine
         private Disposable _gameEdngineDisposable;
         private int _currentScore;
 
-        public GameEngine(IContainer container, ICommandBus commandBus)
+        public GameEngine(IContainer container)
         {
             _container = container;
-            _commandBus = commandBus;
         }
 
         public IGameField Field => _gameField;
@@ -46,47 +43,13 @@ namespace Silent.Tetris.Core.Engine
 
             ChangeState(_gameField.CurrentFigure, _nextFigure, _currentScore);
             GenerateMoveDownCommandsAsync(500);
-            ConsumeCommandsAsync();
             return _gameEdngineDisposable;
         }
 
-        protected void OnStateChanged(GameStateEventArgs e)
-        {
-            StateChanged?.Invoke(this, e);
-        }
-
-        private void ChangeState(IFigure currentFigure, IFigure nextFigure, int currentScore)
-        {
-            State.AssignNextFigure(nextFigure);
-            State.SetScore(currentScore);
-            OnStateChanged(new GameStateEventArgs(currentFigure, nextFigure, currentScore));
-        }
-
-        private void HandleCommand(ICommand command)
-        {
-            ConsoleCommand consoleCommand = (ConsoleCommand)command;
-
-            switch (consoleCommand.Key)
-            {
-                case ConsoleKey.LeftArrow:
-                    MoveCurrentFigure(MotionDirection.Left);
-                    break;
-                case ConsoleKey.RightArrow:
-                    MoveCurrentFigure(MotionDirection.Right);
-                    break;
-                case ConsoleKey.DownArrow:
-                    MoveCurrentFigure(MotionDirection.Down);
-                    break;
-                case ConsoleKey.Spacebar:
-                    RotateCurrentFigure();
-                    break;
-            }
-        }
-
-        private void MoveCurrentFigure(MotionDirection motionDirection)
+        public void MoveCurrentFigure(MotionDirection motionDirection)
         {
             HashSet<MotionDirection> allowedMovements = _motionDetector.DetectAllowedMotion(_gameField.Ground, _gameField.CurrentFigure);
-            
+
             if (motionDirection == MotionDirection.Down && !allowedMovements.Contains(motionDirection))
             {
                 IFigure currentFigure = GenerateCurrentFigure();
@@ -103,7 +66,7 @@ namespace Silent.Tetris.Core.Engine
             }
         }
 
-        private void RotateCurrentFigure()
+        public void RotateCurrentFigure()
         {
             IFigure afterRotation = _gameField.CurrentFigure.Rotate(RotateDirection.Right90Degrees);
             HashSet<MotionDirection> allowedMovements = _motionDetector.DetectAllowedMotion(_gameField.Ground, afterRotation);
@@ -114,6 +77,18 @@ namespace Silent.Tetris.Core.Engine
             {
                 _gameField.SetCurrentFigure(afterRotation);
             }
+        }
+
+        protected void OnStateChanged(GameStateEventArgs e)
+        {
+            StateChanged?.Invoke(this, e);
+        }
+
+        private void ChangeState(IFigure currentFigure, IFigure nextFigure, int currentScore)
+        {
+            State.AssignNextFigure(nextFigure);
+            State.SetScore(currentScore);
+            OnStateChanged(new GameStateEventArgs(currentFigure, nextFigure, currentScore));
         }
 
         private IFigure GenerateCurrentFigure()
@@ -147,20 +122,8 @@ namespace Silent.Tetris.Core.Engine
             {
                 while (!_gameEdngineDisposable.IsDisposed)
                 {
-                    _commandBus.Add(new ConsoleCommand(ConsoleKey.DownArrow));
+                    MoveCurrentFigure(MotionDirection.Down);
                     Task.Delay(delay).Wait();
-                }
-            });
-        }
-
-        private void ConsumeCommandsAsync()
-        {
-            Task.Run(() =>
-            {
-                while (!_gameEdngineDisposable.IsDisposed)
-                {
-                    ICommand command = _commandBus.Take();
-                    HandleCommand(command);
                 }
             });
         }

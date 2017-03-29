@@ -11,7 +11,7 @@ namespace Silent.Tetris.Views
     {
         private readonly IContainer _container;
 
-        public HighScoresView(Size size, IContainer container) : base(size, new[] { MenuOptions.Back })
+        public HighScoresView(IContainer container) : base(new Size(24, 36), new[] { MenuOptions.Back })
         {
             _container = container;
         }
@@ -19,7 +19,7 @@ namespace Silent.Tetris.Views
         public override void Initialize(INavigationService navigationService)
         {
             NavigationService = navigationService;
-            Presenter = new HighScoresPresenter(this, _container);
+            Presenter = new HighScoresPresenter(navigationService, _container);
             Presenter.Initialize();
         }
 

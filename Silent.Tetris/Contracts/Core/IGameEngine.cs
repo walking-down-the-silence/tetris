@@ -27,5 +27,16 @@ namespace Silent.Tetris.Contracts.Core
         /// </summary>
         /// <returns> The <see cref="IDisposable"/> instance to stop the engine. </returns>
         IDisposable Run();
+
+        /// <summary>
+        /// Tries to move current figure by 1 point in specified direction.
+        /// </summary>
+        /// <param name="motionDirection"> Specified direction. </param>
+        void MoveCurrentFigure(MotionDirection motionDirection);
+
+        /// <summary>
+        /// Rotates current figure to the right by 90 degrees.
+        /// </summary>
+        void RotateCurrentFigure();
     }
 }

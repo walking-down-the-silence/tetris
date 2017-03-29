@@ -4,23 +4,21 @@ using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Core.Engine;
 using Silent.Tetris.Views;
-using Silent.Tetris.Contracts.Views;
 
 namespace Silent.Tetris.Presenters
 {
     public class GamePresenter : IGamePresenter
     {
+        private readonly INavigationService _navigationService;
         private readonly IContainer _container;
-        private readonly IGameView _gameView;
         private IGameEngine _gameEngine;
-        private ICommandBus _commandBus;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
         private IDisposable _gameEngineDisposable;
         private IDisposable _commandObserverDisposable;
 
-        public GamePresenter(GameView gameView, IContainer container)
+        public GamePresenter(INavigationService navigationService, IContainer container)
         {
-            _gameView = gameView;
+            _navigationService = navigationService;
             _container = container;
         }
 
@@ -30,8 +28,7 @@ namespace Silent.Tetris.Presenters
 
         public void Initialize()
         {
-            _commandBus = _container.Resolve<ICommandBus>();
-            _gameEngine = new GameEngine(_container, _commandBus);
+            _gameEngine = new GameEngine(_container);
             _gameEngineDisposable = _gameEngine.Run();
 
             _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
@@ -46,14 +43,21 @@ namespace Silent.Tetris.Presenters
             switch (consoleCommand.Key)
             {
                 case ConsoleKey.Escape:
-                    _commandBus.Complete();
-                    _commandBus.Dispose();
                     _gameEngineDisposable.Dispose();
                     _commandObserverDisposable.Dispose();
-                    _gameView.NavigationService.Navigate(new HomeView(_gameView.Size, _container));
+                    _navigationService.Navigate(new HomeView(_container));
                     break;
-                default:
-                    _commandBus.Add(command);
+                case ConsoleKey.LeftArrow:
+                    _gameEngine.MoveCurrentFigure(MotionDirection.Left);
+                    break;
+                case ConsoleKey.RightArrow:
+                    _gameEngine.MoveCurrentFigure(MotionDirection.Right);
+                    break;
+                case ConsoleKey.DownArrow:
+                    _gameEngine.MoveCurrentFigure(MotionDirection.Down);
+                    break;
+                case ConsoleKey.Spacebar:
+                    _gameEngine.RotateCurrentFigure();
                     break;
             }
         }
