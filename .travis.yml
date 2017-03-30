@@ -1,0 +1,9 @@
+language: csharp
+solution: Silent.Tetris.sln
+mono: none
+dotnet: 1.0.1
+install: true
+#script: dotnet build Silent.Tetris.sln
+branches:
+   only:
+      - travis-ci
