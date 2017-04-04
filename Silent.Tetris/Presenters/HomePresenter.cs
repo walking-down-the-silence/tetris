@@ -9,22 +9,51 @@ namespace Silent.Tetris.Presenters
 {
     public class HomePresenter : IHomePresenter
     {
-        private readonly HomeView _homeView;
         private readonly IContainer _container;
+        private INavigationService _navigationService;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
         private IDisposable _commandObserverDisposable;
+        private int _menuOptionIndex;
 
-        public HomePresenter(HomeView homeView, IContainer container)
+        public HomePresenter(IContainer container)
         {
-            _homeView = homeView;
             _container = container;
+            Options = new[]
+            {
+                MenuOptions.StartGame,
+                MenuOptions.HighScores,
+                MenuOptions.Exit
+            };
         }
+
+        public MenuOptions[] Options { get; }
+
+        public MenuOptions SelectedOption => Options[_menuOptionIndex];
 
         public void Initialize()
         {
+            _navigationService = _container.Resolve<INavigationService>();
             _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
             _consoleCommandObserveAsync.Update += Handle;
             _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
+        }
+
+        private void SelectNextOption()
+        {
+            _menuOptionIndex++;
+            if (_menuOptionIndex >= Options.Length)
+            {
+                _menuOptionIndex = 0;
+            }
+        }
+
+        private void SelectPreviousOption()
+        {
+            _menuOptionIndex--;
+            if (_menuOptionIndex < 0)
+            {
+                _menuOptionIndex = Options.Length - 1;
+            }
         }
 
         private void Handle(object sender, ICommand command)
@@ -34,19 +63,19 @@ namespace Silent.Tetris.Presenters
             switch (consoleCommand.Key)
             {
                 case ConsoleKey.DownArrow:
-                    _homeView.SelectNextOption();
+                    SelectNextOption();
                     break;
                 case ConsoleKey.UpArrow:
-                    _homeView.SelectPreviousOption();
+                    SelectPreviousOption();
                     break;
                 case ConsoleKey.Enter:
                     _commandObserverDisposable.Dispose();
-                    IView nextView = GetViewFromMenuOption(_homeView.SelectedOption);
-                    _homeView.NavigationService.Navigate(nextView);
+                    IView nextView = GetViewFromMenuOption(SelectedOption);
+                    _navigationService.Navigate(nextView);
                     break;
                 case ConsoleKey.Escape:
                     _commandObserverDisposable.Dispose();
-                    _homeView.NavigationService.Navigate(null);
+                    _navigationService.Navigate(null);
                     break;
             }
         }

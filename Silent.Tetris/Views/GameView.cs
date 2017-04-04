@@ -1,4 +1,5 @@
-﻿using Silent.Tetris.Contracts;
+﻿using System;
+using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Contracts.Rendering;
@@ -10,36 +11,44 @@ namespace Silent.Tetris.Views
     public class GameView : IGameView
     {
         private readonly IContainer _container;
-        private readonly ISpriteRenderable _gameFieldRenderable;
+        private ISpriteRenderable _gameFieldRenderable;
 
         public GameView(IContainer container)
         {
             _container = container;
-            _gameFieldRenderable = container.Resolve<ISpriteRenderable>();
-            Size = Size.None;
+            Size = new Size(32, 22);
         }
-
-        public INavigationService NavigationService { get; private set; }
 
         public Size Size { get; private set; }
 
         public IGamePresenter Presenter { get; private set; }
 
-        public void Initialize(INavigationService navigationService)
+        public void Initialize()
         {
-            NavigationService = navigationService;
-            Presenter = new GamePresenter(navigationService, _container);
-            Presenter.Initialize();
+            _gameFieldRenderable = _container.Resolve<ISpriteRenderable>();
 
-            int width = Presenter.Field.Size.Width + Presenter.State.Size.Width;
-            int height = Presenter.Field.Size.Height;
-            Size = new Size(width, height);
+            Presenter = new GamePresenter(_container);
+            Presenter.Initialize();
         }
 
         public void Render()
         {
             _gameFieldRenderable.Render(Presenter.Field.GetView());
-            _gameFieldRenderable.Render(Presenter.State.GetView());
+
+            int left = Presenter.Field.Position.Left + Presenter.Field.Size.Width * 2 + 1;
+            int top = 1;
+
+            Console.SetCursorPosition(left, top);
+            Console.Write("Next Figure");
+
+            top = Size.Height - 1;
+
+            Position newPosition = new Position(left + 1, top - Presenter.State.NextFigure.Size.Height);
+            IFigure nextFigure = Presenter.State.NextFigure.SetPosition(newPosition);
+            _gameFieldRenderable.Render(nextFigure);
+
+            Console.SetCursorPosition(left + 1, Presenter.State.NextFigure.Size.Height + 2);
+            Console.Write($"Score: {Presenter.State.CurrentScore}");
         }
     }
 }

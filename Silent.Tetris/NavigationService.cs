@@ -10,7 +10,7 @@ namespace Silent.Tetris
         public void Navigate(IView view)
         {
             CurrentView = view;
-            CurrentView?.Initialize(this);
+            CurrentView?.Initialize();
         }
     }
 }

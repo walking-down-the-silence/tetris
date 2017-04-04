@@ -28,7 +28,7 @@ namespace Silent.Tetris
             {
                 Initialize(gameConfiguration, navigationService.CurrentView);
                 navigationService.CurrentView.Render();
-                Task.Delay(100).Wait();
+                Task.Delay(50).Wait();
             }
         }
 
@@ -41,6 +41,7 @@ namespace Silent.Tetris
             gameContainer.Register<IFactory<IFigure>>(container => new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(container => new FigureRandomGenerator(container.Resolve<IFactory<IFigure>>()));
             gameContainer.Register<IRepository<Player>>(container => new JsonRepository("highscores.json"));
+            gameContainer.Register<IObserveAsync<ICommand>>(container => new ConsoleCommandsObserveAsync());
             return gameContainer;
         }
 
@@ -52,10 +53,13 @@ namespace Silent.Tetris
 
         private static void Initialize(IConfiguration configuration, IView currentView)
         {
-            if (currentView.Size.Width * 2 != Console.WindowWidth || currentView.Size.Height != Console.WindowHeight)
+            if(currentView.Size.Width > 0 && currentView.Size.Height > 0)
             {
-                Console.SetWindowSize(currentView.Size.Width * 2, currentView.Size.Height);
-                Console.SetBufferSize(currentView.Size.Width * 2, currentView.Size.Height);
+                if (currentView.Size.Width * 2 != Console.WindowWidth || currentView.Size.Height != Console.WindowHeight)
+                {
+                    Console.SetWindowSize(currentView.Size.Width * 2, currentView.Size.Height);
+                    Console.SetBufferSize(currentView.Size.Width * 2, currentView.Size.Height);
+                }
             }
 
             Console.CursorVisible = false;

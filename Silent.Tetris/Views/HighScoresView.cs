@@ -7,23 +7,28 @@ using Silent.Tetris.Presenters;
 
 namespace Silent.Tetris.Views
 {
-    public class HighScoresView : ViewBase<IHighScoresPresenter>, IHighScoreView
+    public class HighScoresView : IHighScoreView
     {
         private readonly IContainer _container;
+        private readonly int _score;
 
-        public HighScoresView(IContainer container) : base(new Size(24, 36), new[] { MenuOptions.Back })
+        public HighScoresView(IContainer container)
         {
             _container = container;
+            Size = new Size(24, 36);
         }
 
-        public override void Initialize(INavigationService navigationService)
+        public Size Size { get; }
+
+        public IHighScoresPresenter Presenter { get; private set; }
+
+        public void Initialize()
         {
-            NavigationService = navigationService;
-            Presenter = new HighScoresPresenter(navigationService, _container);
+            Presenter = new HighScoresPresenter(_container);
             Presenter.Initialize();
         }
 
-        public override void Render()
+        public void Render()
         {
             Console.Clear();
 

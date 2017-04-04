@@ -10,10 +10,15 @@ namespace Silent.Tetris.Core.Figures
         private readonly Position _position;
         private readonly Size _size;
 
+        protected FigureBase(Position position, Color color, bool[,] cells)
+            : this(position, ToColorMap(color, cells))
+        {
+        }
+
         protected FigureBase(Position position, Color[,] cells)
         {
-            _cells = cells;
             _position = position;
+            _cells = cells;
             _size = new Size(cells.GetLength(1), cells.GetLength(0));
         }
 
@@ -86,6 +91,23 @@ namespace Silent.Tetris.Core.Figures
             }
 
             return newArray;
+        }
+
+        private static Color[,] ToColorMap(Color color, bool[,] cells)
+        {
+            int width = cells.GetLength(1);
+            int height = cells.GetLength(0);
+            Color[,] colors = new Color[height, width];
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    colors[i, j] = cells[i, j] ? color : Color.Transparent;
+                }
+            }
+
+            return colors;
         }
     }
 }

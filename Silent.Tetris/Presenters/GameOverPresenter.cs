@@ -1,35 +1,30 @@
-using System;
-using System.Collections.Generic;
-using Silent.Tetris.Contracts;
+﻿using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Core.Engine;
 using Silent.Tetris.Views;
+using System;
 
 namespace Silent.Tetris.Presenters
 {
-    public class HighScoresPresenter : IHighScoresPresenter
+    public class GameOverPresenter : IGameOverPresenter
     {
         private readonly IContainer _container;
         private INavigationService _navigationService;
         private IObserveAsync<ICommand> _consoleCommandObserveAsync;
         private IDisposable _commandObserverDisposable;
-        private IRepository<Player> _playerScoresRepository;
-        private int _score;
 
-        public HighScoresPresenter(IContainer container)
+        public GameOverPresenter(IContainer container, int score)
         {
             _container = container;
+            Score = score;
         }
 
-        public ICollection<Player> HighScores => _playerScoresRepository.GetAll();
+        public int Score { get; }
 
         public void Initialize()
         {
-            _playerScoresRepository = _container.Resolve<IRepository<Player>>();
-            _playerScoresRepository.Load();
-
             _navigationService = _container.Resolve<INavigationService>();
-            _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
+            _consoleCommandObserveAsync = _container.Resolve<IObserveAsync<ICommand>>();
             _consoleCommandObserveAsync.Update += Handle;
             _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
         }
@@ -40,10 +35,9 @@ namespace Silent.Tetris.Presenters
 
             switch (consoleCommand.Key)
             {
-                case ConsoleKey.Escape:
                 case ConsoleKey.Enter:
                     _commandObserverDisposable.Dispose();
-                    _navigationService.Navigate(new HomeView(_container));
+                    _navigationService.Navigate(new HighScoresView(_container));
                     break;
             }
         }
