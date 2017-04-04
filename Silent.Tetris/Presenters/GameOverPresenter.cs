@@ -1,8 +1,8 @@
-﻿using Silent.Tetris.Contracts;
+﻿using System;
+using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Core.Engine;
 using Silent.Tetris.Views;
-using System;
 
 namespace Silent.Tetris.Presenters
 {
@@ -10,8 +10,7 @@ namespace Silent.Tetris.Presenters
     {
         private readonly IContainer _container;
         private INavigationService _navigationService;
-        private IObserveAsync<ICommand> _consoleCommandObserveAsync;
-        private IDisposable _commandObserverDisposable;
+        private IObserveAsync<ICommand> _commandObserver;
 
         public GameOverPresenter(IContainer container, int score)
         {
@@ -24,9 +23,8 @@ namespace Silent.Tetris.Presenters
         public void Initialize()
         {
             _navigationService = _container.Resolve<INavigationService>();
-            _consoleCommandObserveAsync = _container.Resolve<IObserveAsync<ICommand>>();
-            _consoleCommandObserveAsync.Update += Handle;
-            _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
+            _commandObserver = _container.Resolve<IObserveAsync<ICommand>>();
+            _commandObserver.Update += Handle;
         }
 
         private void Handle(object sender, ICommand command)
@@ -36,7 +34,7 @@ namespace Silent.Tetris.Presenters
             switch (consoleCommand.Key)
             {
                 case ConsoleKey.Enter:
-                    _commandObserverDisposable.Dispose();
+                    _commandObserver.Update -= Handle;
                     _navigationService.Navigate(new HighScoresView(_container));
                     break;
             }

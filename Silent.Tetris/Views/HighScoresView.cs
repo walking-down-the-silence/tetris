@@ -10,7 +10,6 @@ namespace Silent.Tetris.Views
     public class HighScoresView : IHighScoreView
     {
         private readonly IContainer _container;
-        private readonly int _score;
 
         public HighScoresView(IContainer container)
         {

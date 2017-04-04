@@ -5,7 +5,7 @@ using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Core.Figures;
 
-namespace Silent.Tetris
+namespace Silent.Tetris.Core.Engine
 {
     public class SymbolFactory : IFactory<IEnumerable<IFigure>, string>
     {
@@ -60,24 +60,6 @@ namespace Silent.Tetris
             }
         }
 
-        private sealed class LetterC : FigureBase
-        {
-            public LetterC(Color color) : base(Position.None, color, new[,]
-            {
-                { true, true, true, true, true },
-                { true, false, false, false, false },
-                { true, false, false, false, false },
-                { true, false, false, false, false },
-                { true, true, true, true, true }
-            })
-            {
-            }
-
-            public LetterC(Position position, Color[,] cells) : base(position, cells)
-            {
-            }
-        }
-
         private sealed class LetterA : FigureBase
         {
             public LetterA(Color color) : base(Position.None, color, new[,]
@@ -128,24 +110,6 @@ namespace Silent.Tetris
             }
 
             public LetterR(Position position, Color[,] cells) : base(position, cells)
-            {
-            }
-        }
-
-        private sealed class LetterS : FigureBase
-        {
-            public LetterS(Color color) : base(Position.None, color, new[,]
-            {
-                { true, true, true, true, true },
-                { true, false, false, false, false },
-                { true, true, true, true, true },
-                { false, false, false, false, true },
-                { true, true, true, true, true }
-            })
-            {
-            }
-
-            public LetterS(Position position, Color[,] cells) : base(position, cells)
             {
             }
         }

@@ -12,9 +12,8 @@ namespace Silent.Tetris.Presenters
         private readonly IContainer _container;
         private INavigationService _navigationService;
         private IGameEngine _gameEngine;
-        private IObserveAsync<ICommand> _consoleCommandObserveAsync;
+        private IObserveAsync<ICommand> _commandObserver;
         private IDisposable _gameEngineDisposable;
-        private IDisposable _commandObserverDisposable;
 
         public GamePresenter(IContainer container)
         {
@@ -28,9 +27,8 @@ namespace Silent.Tetris.Presenters
         public void Initialize()
         {
             _navigationService = _container.Resolve<INavigationService>();
-            _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
-            _consoleCommandObserveAsync.Update += Handle;
-            _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
+            _commandObserver = _container.Resolve<IObserveAsync<ICommand>>();
+            _commandObserver.Update += Handle;
 
             _gameEngine = new GameEngine(_container);
             _gameEngine.StateChanged += HandleStateChanged;
@@ -42,7 +40,7 @@ namespace Silent.Tetris.Presenters
             if (_gameEngine.IsGameOver())
             {
                 _gameEngineDisposable.Dispose();
-                _commandObserverDisposable.Dispose();
+                _commandObserver.Update -= Handle;
 
                 var playerScoresRepository = _container.Resolve<IRepository<Player>>();
                 playerScoresRepository.Load();
@@ -66,7 +64,7 @@ namespace Silent.Tetris.Presenters
             {
                 case ConsoleKey.Escape:
                     _gameEngineDisposable.Dispose();
-                    _commandObserverDisposable.Dispose();
+                    _commandObserver.Update -= Handle;
                     _navigationService.Navigate(new HomeView(_container));
                     break;
                 case ConsoleKey.Enter:

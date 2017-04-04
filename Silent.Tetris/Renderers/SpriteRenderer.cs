@@ -1,7 +1,6 @@
 using System;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Rendering;
-using Silent.Tetris.Core;
 
 namespace Silent.Tetris.Renderers
 {

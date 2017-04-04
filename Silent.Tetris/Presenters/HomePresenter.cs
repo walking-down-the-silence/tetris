@@ -11,8 +11,7 @@ namespace Silent.Tetris.Presenters
     {
         private readonly IContainer _container;
         private INavigationService _navigationService;
-        private IObserveAsync<ICommand> _consoleCommandObserveAsync;
-        private IDisposable _commandObserverDisposable;
+        private IObserveAsync<ICommand> _commandObserver;
         private int _menuOptionIndex;
 
         public HomePresenter(IContainer container)
@@ -33,9 +32,8 @@ namespace Silent.Tetris.Presenters
         public void Initialize()
         {
             _navigationService = _container.Resolve<INavigationService>();
-            _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
-            _consoleCommandObserveAsync.Update += Handle;
-            _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
+            _commandObserver = _container.Resolve<IObserveAsync<ICommand>>();
+            _commandObserver.Update += Handle;
         }
 
         private void SelectNextOption()
@@ -69,12 +67,12 @@ namespace Silent.Tetris.Presenters
                     SelectPreviousOption();
                     break;
                 case ConsoleKey.Enter:
-                    _commandObserverDisposable.Dispose();
+                    _commandObserver.Update -= Handle;
                     IView nextView = GetViewFromMenuOption(SelectedOption);
                     _navigationService.Navigate(nextView);
                     break;
                 case ConsoleKey.Escape:
-                    _commandObserverDisposable.Dispose();
+                    _commandObserver.Update -= Handle;
                     _navigationService.Navigate(null);
                     break;
             }

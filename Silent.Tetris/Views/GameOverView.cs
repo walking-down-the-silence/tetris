@@ -1,24 +1,25 @@
-﻿using Silent.Tetris.Contracts;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Contracts.Views;
 using Silent.Tetris.Contracts.Rendering;
-using System.Collections.Generic;
-using System.Linq;
 using Silent.Tetris.Presenters;
-using System;
+using Silent.Tetris.Core.Engine;
 
 namespace Silent.Tetris.Views
 {
     public class GameOverView : IGameOverView
     {
         private readonly IContainer _container;
+        private readonly int _score;
         private ISpriteRenderable _gameFieldRenderable;
         private IFactory<IEnumerable<IFigure>, string> _symbolFactory;
         private IList<IFigure> _gameCharacters;
         private IList<IFigure> _overCharacters;
         private IList<IFigure> _scoreCharacters;
-        private int _score;
 
         public GameOverView(IContainer container, int score)
         {
@@ -27,7 +28,7 @@ namespace Silent.Tetris.Views
             Size = new Size(32, 22);
         }
 
-        public Size Size { get; private set; }
+        public Size Size { get; }
 
         public IGameOverPresenter Presenter { get; private set; }
 

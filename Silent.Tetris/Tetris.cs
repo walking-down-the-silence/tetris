@@ -17,6 +17,10 @@ namespace Silent.Tetris
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedException;
 
             IContainer gameServiceLocator = BuildServiceLocator();
+
+            IObserveAsync<ICommand> commandObserver = gameServiceLocator.Resolve<IObserveAsync<ICommand>>();
+            IDisposable commandObserverDisposable = commandObserver.ObserveAsync();
+
             IConfiguration gameConfiguration = gameServiceLocator.Resolve<IConfiguration>();
             IView homeView = new HomeView(gameServiceLocator);
             Initialize(gameConfiguration, homeView);
@@ -24,11 +28,14 @@ namespace Silent.Tetris
             INavigationService navigationService = gameServiceLocator.Resolve<INavigationService>();
             navigationService.Navigate(homeView);
 
-            while (navigationService.CurrentView != null)
+            using (commandObserverDisposable)
             {
-                Initialize(gameConfiguration, navigationService.CurrentView);
-                navigationService.CurrentView.Render();
-                Task.Delay(50).Wait();
+                while (navigationService.CurrentView != null)
+                {
+                    Initialize(gameConfiguration, navigationService.CurrentView);
+                    navigationService.CurrentView.Render();
+                    Task.Delay(50).Wait();
+                }
             }
         }
 
@@ -37,11 +44,11 @@ namespace Silent.Tetris
             IContainer gameContainer = new ServiceLocator();
             gameContainer.Register<IConfiguration>(BuildConsoleConfiguration("Tetris"));
             gameContainer.Register<INavigationService>(new NavigationService());
-            gameContainer.Register<ISpriteRenderable>(container => new SpriteRenderer());
-            gameContainer.Register<IFactory<IFigure>>(container => new FigureFactory());
+            gameContainer.Register<ISpriteRenderable>(new SpriteRenderer());
+            gameContainer.Register<IFactory<IFigure>>(new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(container => new FigureRandomGenerator(container.Resolve<IFactory<IFigure>>()));
-            gameContainer.Register<IRepository<Player>>(container => new JsonRepository("highscores.json"));
-            gameContainer.Register<IObserveAsync<ICommand>>(container => new ConsoleCommandsObserveAsync());
+            gameContainer.Register<IRepository<Player>>(new JsonRepository("highscores.json"));
+            gameContainer.Register<IObserveAsync<ICommand>>(new ConsoleCommandsObserveAsync());
             return gameContainer;
         }
 

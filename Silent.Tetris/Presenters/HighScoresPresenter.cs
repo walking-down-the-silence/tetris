@@ -11,10 +11,8 @@ namespace Silent.Tetris.Presenters
     {
         private readonly IContainer _container;
         private INavigationService _navigationService;
-        private IObserveAsync<ICommand> _consoleCommandObserveAsync;
-        private IDisposable _commandObserverDisposable;
+        private IObserveAsync<ICommand> _commandObserver;
         private IRepository<Player> _playerScoresRepository;
-        private int _score;
 
         public HighScoresPresenter(IContainer container)
         {
@@ -29,9 +27,8 @@ namespace Silent.Tetris.Presenters
             _playerScoresRepository.Load();
 
             _navigationService = _container.Resolve<INavigationService>();
-            _consoleCommandObserveAsync = new ConsoleCommandsObserveAsync();
-            _consoleCommandObserveAsync.Update += Handle;
-            _commandObserverDisposable = _consoleCommandObserveAsync.ObserveAsync();
+            _commandObserver = _container.Resolve<IObserveAsync<ICommand>>();
+            _commandObserver.Update += Handle;
         }
 
         private void Handle(object sender, ICommand command)
@@ -42,7 +39,7 @@ namespace Silent.Tetris.Presenters
             {
                 case ConsoleKey.Escape:
                 case ConsoleKey.Enter:
-                    _commandObserverDisposable.Dispose();
+                    _commandObserver.Update -= Handle;
                     _navigationService.Navigate(new HomeView(_container));
                     break;
             }

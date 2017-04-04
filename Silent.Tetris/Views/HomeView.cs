@@ -11,7 +11,7 @@ namespace Silent.Tetris.Views
     {
         private readonly IContainer _container;
 
-        public HomeView(IContainer container) : base()
+        public HomeView(IContainer container)
         {
             _container = container;
             Size = new Size(24, 36);
