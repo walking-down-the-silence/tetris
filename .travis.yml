@@ -17,7 +17,3 @@ before_script:
 
 script: 
     - dotnet build
-
-branches:
-    only:
-        - travis-ci
