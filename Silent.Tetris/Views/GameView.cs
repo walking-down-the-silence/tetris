@@ -1,10 +1,10 @@
-﻿using System;
-using Silent.Tetris.Contracts;
+﻿using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
 using Silent.Tetris.Contracts.Rendering;
 using Silent.Tetris.Contracts.Views;
 using Silent.Tetris.Presenters;
+using System;
 
 namespace Silent.Tetris.Views
 {
@@ -16,7 +16,7 @@ namespace Silent.Tetris.Views
         public GameView(IContainer container)
         {
             _container = container;
-            Size = new Size(32, 22);
+            Size = new Size(10, 22);
         }
 
         public Size Size { get; }
@@ -29,26 +29,17 @@ namespace Silent.Tetris.Views
 
             Presenter = new GamePresenter(_container);
             Presenter.Initialize();
+
+            Console.ResetColor();
+            Console.Clear();
         }
 
         public void Render()
         {
-            _gameFieldRenderable.Render(Presenter.Field.GetView());
-
-            int left = Presenter.Field.Size.Width * 2 + 1;
-            int top = 1;
-
-            Console.SetCursorPosition(left, top);
-            Console.Write("Next Figure");
-
-            top = Size.Height - 1;
-
-            Position newPosition = new Position(left + 1, top - Presenter.State.NextFigure.Size.Height);
-            IFigure nextFigure = Presenter.State.NextFigure.SetPosition(newPosition);
-            _gameFieldRenderable.Render(nextFigure);
-
-            Console.SetCursorPosition(left + 1, Presenter.State.NextFigure.Size.Height + 2);
-            Console.Write($"Score: {Presenter.State.CurrentScore}");
+            if(Presenter.Field != null)
+            {
+                _gameFieldRenderable.Render(Presenter.Field.GetView());
+            }
         }
     }
 }

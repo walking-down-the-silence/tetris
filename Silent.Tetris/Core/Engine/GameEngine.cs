@@ -36,7 +36,8 @@ namespace Silent.Tetris.Core.Engine
             _gameState.AssignNextFigure(_figureRandomGenerator.GenerateNext());
             _gameState.SetScore(0);
 
-            _gameField = InitializeGameField();
+            Size gameFieldDefaultSize = new Size(10, 22);
+            _gameField = new GameField(gameFieldDefaultSize);
             _gameField.SetCurrentFigure(GenerateCurrentFigure());
 
             GenerateMoveDownCommandsAsync(500);
@@ -123,12 +124,6 @@ namespace Silent.Tetris.Core.Engine
             int currentX = _gameField.Ground.Size.Width / 2 - _gameState.NextFigure.Size.Width / 2;
             int currentY = _gameField.Ground.Size.Height - _gameState.NextFigure.Size.Height;
             return _gameState.NextFigure.SetPosition(new Position(currentX, currentY));
-        }
-
-        private IGameField InitializeGameField()
-        {
-            IConfiguration configuration = _container.Resolve<IConfiguration>();
-            return new GameField(configuration.GameFieldSize);
         }
 
         private void GenerateMoveDownCommandsAsync(int delay)

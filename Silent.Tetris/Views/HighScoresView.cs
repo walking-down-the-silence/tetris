@@ -14,7 +14,7 @@ namespace Silent.Tetris.Views
         public HighScoresView(IContainer container)
         {
             _container = container;
-            Size = new Size(24, 36);
+            Size = new Size(25, 20);
         }
 
         public Size Size { get; }
@@ -25,20 +25,21 @@ namespace Silent.Tetris.Views
         {
             Presenter = new HighScoresPresenter(_container);
             Presenter.Initialize();
+
+            Console.ResetColor();
+            Console.Clear();
         }
 
         public void Render()
         {
-            Console.Clear();
-
             const string title = "High Scores";
             const int betweenLinesGap = 2;
             const int titleAndBackLines = 2;
             const int totalLineLength = 20;
 
             int totalLinesCount = Presenter.HighScores.Count + betweenLinesGap + titleAndBackLines;
-            int titleLeftPosition = Console.WindowWidth / 2 - title.Length / 2 - 1;
-            int titleTopPosition = Console.WindowHeight / 2 - totalLinesCount / 2 - 1;
+            int titleLeftPosition = Size.Width - title.Length / 2 - 1;
+            int titleTopPosition = 1;
 
             Console.ResetColor();
             Console.SetCursorPosition(titleLeftPosition, titleTopPosition);
@@ -51,10 +52,10 @@ namespace Silent.Tetris.Views
                 foreach (Player playerScore in Presenter.HighScores)
                 {
                     string formattedScore = playerScore.Name + playerScore.Score.ToString()
-                        .PadLeft(totalLineLength - playerScore.Name.Length, '_');
+                        .PadLeft(totalLineLength - playerScore.Name.Length, '.');
 
-                    int left = Console.WindowWidth / 2 - formattedScore.Length / 2 - 1;
-                    int top = Console.WindowHeight / 2 - totalLinesCount / 2 + index + 1;
+                    int left = Size.Width - formattedScore.Length / 2 - 1;
+                    int top = titleTopPosition + index + 2;
                     index++;
                     Console.SetCursorPosition(left, top);
                     Console.Write(formattedScore);
@@ -63,16 +64,16 @@ namespace Silent.Tetris.Views
             else
             {
                 string noScoresMessage = "No Scores Yet...";
-                int left = Console.WindowWidth / 2 - noScoresMessage.Length / 2 - 1;
-                int top = Console.WindowHeight / 2 - totalLinesCount / 2 + 2;
+                int left = Size.Width - noScoresMessage.Length / 2 - 1;
+                int top = Size.Height / 2 - totalLinesCount / 2 + 2;
                 Console.SetCursorPosition(left, top);
                 Console.Write(noScoresMessage);
             }
 
             string formattedOption = $"- {MenuOptions.Back} -";
 
-            int optionLeftPosition = Console.WindowWidth/2 - formattedOption.Length/2 - 1;
-            int optionTopPosition = Console.WindowHeight/2 - totalLinesCount + totalLineLength;
+            int optionLeftPosition = Size.Width - formattedOption.Length/2 - 1;
+            int optionTopPosition = Size.Height - 2;
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.SetCursorPosition(optionLeftPosition, optionTopPosition);
             Console.Write(formattedOption);

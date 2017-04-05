@@ -14,7 +14,7 @@ namespace Silent.Tetris.Views
         public HomeView(IContainer container)
         {
             _container = container;
-            Size = new Size(24, 36);
+            Size = new Size(25, 20);
         }
 
         public Size Size { get; }
@@ -25,6 +25,9 @@ namespace Silent.Tetris.Views
         {
             Presenter = new HomePresenter(_container);
             Presenter.Initialize();
+
+            Console.ResetColor();
+            Console.Clear();
         }
 
         public void Render()

@@ -10,6 +10,7 @@ namespace Silent.Tetris.Renderers
 
         public SpriteRenderer()
         {
+            Console.CursorVisible = false;
             Console.Clear();
         }
 

@@ -25,7 +25,7 @@ namespace Silent.Tetris.Views
         {
             _container = container;
             _score = score;
-            Size = new Size(32, 22);
+            Size = new Size(25, 20);
         }
 
         public Size Size { get; }
@@ -43,12 +43,13 @@ namespace Silent.Tetris.Views
 
             Presenter = new GameOverPresenter(_container, _score);
             Presenter.Initialize();
+
+            Console.ResetColor();
+            Console.Clear();
         }
 
         public void Render()
         {
-            Console.Clear();
-
             int left = 1;
             int top = Size.Height - _gameCharacters[0].Size.Height - 1;
 
