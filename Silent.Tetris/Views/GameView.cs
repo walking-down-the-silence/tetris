@@ -19,7 +19,7 @@ namespace Silent.Tetris.Views
             Size = new Size(32, 22);
         }
 
-        public Size Size { get; private set; }
+        public Size Size { get; }
 
         public IGamePresenter Presenter { get; private set; }
 
@@ -35,7 +35,7 @@ namespace Silent.Tetris.Views
         {
             _gameFieldRenderable.Render(Presenter.Field.GetView());
 
-            int left = Presenter.Field.Position.Left + Presenter.Field.Size.Width * 2 + 1;
+            int left = Presenter.Field.Size.Width * 2 + 1;
             int top = 1;
 
             Console.SetCursorPosition(left, top);

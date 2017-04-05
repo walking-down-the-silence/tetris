@@ -9,9 +9,10 @@ namespace Silent.Tetris.Core.Engine
         private IFigure _currentFigure;
         private IGround _ground;
 
-        public GameField(Position position, Size size) : base(position, size)
+        public GameField(Size size) : base(size)
         {
-            _ground = new GoundFigure(position, size);
+            Position groundDefaultPosition = Position.None;
+            _ground = new GoundFigure(groundDefaultPosition, size);
         }
 
         public IFigure CurrentFigure => _currentFigure;

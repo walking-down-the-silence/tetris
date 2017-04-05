@@ -9,7 +9,6 @@ namespace Silent.Tetris.Core.Engine
 {
     public class GameEngine : IGameEngine
     {
-        private const int LayoutMargin = 1;
         private readonly IContainer _container;
         private readonly MotionDetector _motionDetector = new MotionDetector();
         private IGameField _gameField;
@@ -129,8 +128,7 @@ namespace Silent.Tetris.Core.Engine
         private IGameField InitializeGameField()
         {
             IConfiguration configuration = _container.Resolve<IConfiguration>();
-            Position gameFieldPosition = new Position(LayoutMargin, 0);
-            return new GameField(gameFieldPosition, configuration.GameFieldSize);
+            return new GameField(configuration.GameFieldSize);
         }
 
         private void GenerateMoveDownCommandsAsync(int delay)
