@@ -1,4 +1,4 @@
-﻿namespace Silent.Tetris.Views
+﻿namespace Silent.Tetris.Contracts.Presenters
 {
     public enum MenuOptions
     {

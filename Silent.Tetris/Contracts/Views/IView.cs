@@ -8,11 +8,6 @@ namespace Silent.Tetris.Contracts.Views
     public interface IView
     {
         /// <summary>
-        /// Gets the <see cref="INavigationService"/> instance.
-        /// </summary>
-        INavigationService NavigationService { get; }
-
-        /// <summary>
         /// Getes the size of the view.
         /// </summary>
         Size Size { get; }
@@ -20,8 +15,7 @@ namespace Silent.Tetris.Contracts.Views
         /// <summary>
         /// Initializes the view and its components.
         /// </summary>
-        /// <param name="navigationService"> The <see cref="INavigationService"/> instance. </param>
-        void Initialize(INavigationService navigationService);
+        void Initialize();
 
         /// <summary>
         /// Performs rendering of curent view.

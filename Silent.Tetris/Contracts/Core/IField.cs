@@ -6,11 +6,6 @@ namespace Silent.Tetris.Contracts.Core
     public interface IField
     {
         /// <summary>
-        /// Gets the position of the field on the view.
-        /// </summary>
-        Position Position { get; }
-
-        /// <summary>
         /// Gets the size of the field on the view.
         /// </summary>
         Size Size { get; }

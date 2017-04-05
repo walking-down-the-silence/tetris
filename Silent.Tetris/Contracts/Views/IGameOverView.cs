@@ -3,9 +3,9 @@
 namespace Silent.Tetris.Contracts.Views
 {
     /// <summary>
-    /// Represents the game view.
+    /// Represents the game over view.
     /// </summary>
-    public interface IGameView : IView<IGamePresenter>
+    public interface IGameOverView : IView<IGameOverPresenter>
     {
     }
 }

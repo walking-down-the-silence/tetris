@@ -9,8 +9,6 @@ namespace Silent.Tetris.Core.Engine
 {
     public class GameEngine : IGameEngine
     {
-        private const int LayoutMargin = 1;
-        private const int RightPanelWidth = 22;
         private readonly IContainer _container;
         private readonly MotionDetector _motionDetector = new MotionDetector();
         private IGameField _gameField;
@@ -34,19 +32,44 @@ namespace Silent.Tetris.Core.Engine
             _gameEngineDisposable = new Disposable();
             _figureRandomGenerator = _container.Resolve<IRandomGenerator<IFigure>>();
 
-            _gameState = InitializeGameStateField();
+            _gameState = new GameState();
             _gameState.AssignNextFigure(_figureRandomGenerator.GenerateNext());
             _gameState.SetScore(0);
 
-            _gameField = InitializeGameField();
+            Size gameFieldDefaultSize = new Size(10, 22);
+            _gameField = new GameField(gameFieldDefaultSize);
             _gameField.SetCurrentFigure(GenerateCurrentFigure());
 
             GenerateMoveDownCommandsAsync(500);
             return _gameEngineDisposable;
         }
 
+        public bool IsGameOver()
+        {
+            if (_gameField.Ground.Size.Height >= _gameField.Size.Height)
+            {
+                int y = _gameField.Size.Height - 1;
+
+                for (int i = 0; i < _gameField.Size.Width; i++)
+                {
+                    if(_gameField.Ground[i, y] != Color.Transparent)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public void MoveCurrentFigure(MotionDirection motionDirection)
         {
+            if(IsGameOver())
+            {
+                OnStateChanged();
+                return;
+            }
+
             HashSet<MotionDirection> allowedMovements = _motionDetector.DetectAllowedMotion(_gameField.Ground, _gameField.CurrentFigure);
 
             if (motionDirection == MotionDirection.Down && !allowedMovements.Contains(motionDirection))
@@ -54,11 +77,18 @@ namespace Silent.Tetris.Core.Engine
                 IGround ground = _gameField.Ground.Merge(_gameField.CurrentFigure);
                 IFigure currentFigure = GenerateCurrentFigure();
 
+                if (IsGameOver())
+                {
+                    OnStateChanged();
+                    return;
+                }
+
                 _gameField.SetCurrentFigure(currentFigure);
                 _gameField.SetGround(ground);
+                int rowsCompleted = _gameField.Ground.Clean();
 
                 _gameState.AssignNextFigure(_figureRandomGenerator.GenerateNext());
-                _gameState.SetScore(_gameState.CurrentScore + 1000);
+                _gameState.SetScore(_gameState.CurrentScore + 100 * rowsCompleted);
             }
             else if (allowedMovements.Contains(motionDirection))
             {
@@ -80,9 +110,13 @@ namespace Silent.Tetris.Core.Engine
             }
         }
 
-        protected void OnStateChanged(GameStateEventArgs e)
+        protected void OnStateChanged()
         {
-            StateChanged?.Invoke(this, e);
+            GameStateEventArgs eventArgs = new GameStateEventArgs(
+                _gameField.CurrentFigure, 
+                _gameState.NextFigure, 
+                _gameState.CurrentScore);
+            StateChanged?.Invoke(this, eventArgs);
         }
 
         private IFigure GenerateCurrentFigure()
@@ -92,27 +126,11 @@ namespace Silent.Tetris.Core.Engine
             return _gameState.NextFigure.SetPosition(new Position(currentX, currentY));
         }
 
-        private IGameState InitializeGameStateField()
-        {
-            IConfiguration configuration = _container.Resolve<IConfiguration>();
-            int gameStateLeft = LayoutMargin + configuration.GameFieldSize.Width + 1;
-            Size gameStateSize = new Size(RightPanelWidth, configuration.GameFieldSize.Height);
-            Position gameStatePosition = new Position(gameStateLeft, 0);
-            return new GameState(gameStatePosition, gameStateSize);
-        }
-
-        private IGameField InitializeGameField()
-        {
-            IConfiguration configuration = _container.Resolve<IConfiguration>();
-            Position gameFieldPosition = new Position(LayoutMargin, 0);
-            return new GameField(gameFieldPosition, configuration.GameFieldSize);
-        }
-
         private void GenerateMoveDownCommandsAsync(int delay)
         {
             Task.Run(() =>
             {
-                while (!_gameEngineDisposable.IsDisposed)
+                while (!_gameEngineDisposable.IsDisposed && !IsGameOver())
                 {
                     MoveCurrentFigure(MotionDirection.Down);
                     Task.Delay(delay).Wait();

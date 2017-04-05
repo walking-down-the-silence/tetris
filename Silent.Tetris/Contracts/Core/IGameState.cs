@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the game state information
     /// </summary>
-    public interface IGameState : IField
+    public interface IGameState
     {
         /// <summary>
         /// Gets the next <see cref="IFigure"/> that will be in game field.

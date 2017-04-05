@@ -36,7 +36,7 @@ namespace Silent.Tetris.Core.Engine
         public Position Position => _position;
 
         public Size Size => _size;
-
+        
         public IGround Merge(IFigure figure)
         {
             while (_gameFieldRows.Count < figure.Position.Bottom + figure.Size.Height)
@@ -58,6 +58,12 @@ namespace Silent.Tetris.Core.Engine
                 }
             }
 
+            return this;
+        }
+
+        public int Clean()
+        {
+            int completedRows = _gameFieldRows.Count(row => row.IsComplete());
             IGameFieldRow completeRow = _gameFieldRows.FirstOrDefault(row => row.IsComplete());
 
             while (completeRow != null)
@@ -66,7 +72,7 @@ namespace Silent.Tetris.Core.Engine
                 completeRow = _gameFieldRows.FirstOrDefault(row => row.IsComplete());
             }
 
-            return this;
+            return completedRows;
         }
     }
 }

@@ -29,6 +29,12 @@ namespace Silent.Tetris.Contracts.Core
         IDisposable Run();
 
         /// <summary>
+        /// Checks if game is over.
+        /// </summary>
+        /// <returns> Game over indicator. </returns>
+        bool IsGameOver();
+
+        /// <summary>
         /// Tries to move current figure by 1 point in specified direction.
         /// </summary>
         /// <param name="motionDirection"> Specified direction. </param>

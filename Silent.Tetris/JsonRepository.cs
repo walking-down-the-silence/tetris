@@ -62,12 +62,12 @@ namespace Silent.Tetris
         {
             public int Compare(Player x, Player y)
             {
-                if (x.Score > y.Score)
+                if (x != null && y != null && x.Score > y.Score)
                 {
                     return 1;
                 }
 
-                if (x.Score < y.Score)
+                if (x != null && y != null && x.Score < y.Score)
                 {
                     return -1;
                 }

@@ -1,21 +1,18 @@
 using System.Collections.Generic;
 using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Extensions;
 
 namespace Silent.Tetris.Core.Engine
 {
     public abstract class FieldBase : IField
     {
-        private readonly Position _position;
         private readonly Size _size;
         private Color[,] _cachedGameFieldView;
 
-        protected FieldBase(Position position, Size size)
+        protected FieldBase(Size size)
         {
-            _position = position;
             _size = size;
         }
-
-        public Position Position => _position;
 
         public Size Size => _size;
 
@@ -31,11 +28,11 @@ namespace Silent.Tetris.Core.Engine
 
             Color[,] differenceGameFieldView = _cachedGameFieldView == null
                 ? currentGameFieldView
-                : GetViewDifference(_cachedGameFieldView, currentGameFieldView);
+                : ColorArrayTransformer.GetDifference(_cachedGameFieldView, currentGameFieldView);
 
             _cachedGameFieldView = currentGameFieldView;
 
-            return CreateFieldSprite(Position, differenceGameFieldView);
+            return CreateFieldSprite(differenceGameFieldView);
         }
 
         protected abstract IEnumerable<ISprite> GetSpriteCollection();
@@ -46,7 +43,7 @@ namespace Silent.Tetris.Core.Engine
             {
                 for (int j = 0; j < sprite.Size.Height; j++)
                 {
-                    int xPosition = sprite.Position.Left - Position.Left + i;
+                    int xPosition = sprite.Position.Left + i;
                     int yPosition = Size.Height - sprite.Position.Bottom - j - 1;
 
                     if (xPosition >= 0 && 
@@ -61,34 +58,9 @@ namespace Silent.Tetris.Core.Engine
             }
         }
 
-        protected Color[,] GetViewDifference(Color[,] previousView, Color[,] currentView)
+        protected ISprite CreateFieldSprite(Color[,] colors)
         {
-            Color[,] differenceView = new Color[Size.Height, Size.Width];
-
-            for (int i = 0; i < Size.Width; i++)
-            {
-                for (int j = 0; j < Size.Height; j++)
-                {
-                    if (previousView[j, i] != currentView[j, i])
-                    {
-                        if (currentView[j, i] == Color.Transparent)
-                        {
-                            differenceView[j, i] = Color.Black;
-                        }
-                        else
-                        {
-                            differenceView[j, i] = currentView[j, i];
-                        }
-                    }
-                }
-            }
-
-            return differenceView;
-        }
-
-        protected ISprite CreateFieldSprite(Position position, Color[,] colors)
-        {
-            return new FieldSprite(position, colors);
+            return new FieldSprite(Position.None, colors);
         }
 
         private class FieldSprite : ISprite

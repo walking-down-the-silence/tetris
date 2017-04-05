@@ -7,42 +7,42 @@ using Silent.Tetris.Presenters;
 
 namespace Silent.Tetris.Views
 {
-    public class HomeView : ViewBase<IHomePresenter>, IHomeView
+    public class HomeView : IHomeView
     {
         private readonly IContainer _container;
 
-        public HomeView(IContainer container) : base(
-            new Size(12, 24), 
-            new[]
-            {
-                MenuOptions.StartGame,
-                MenuOptions.HighScores,
-                MenuOptions.Exit
-            })
+        public HomeView(IContainer container)
         {
             _container = container;
+            Size = new Size(25, 20);
         }
 
-        public override void Initialize(INavigationService navigationService)
+        public Size Size { get; }
+
+        public IHomePresenter Presenter { get; private set; }
+
+        public void Initialize()
         {
-            NavigationService = navigationService;
-            Presenter = new HomePresenter(this, _container);
+            Presenter = new HomePresenter(_container);
             Presenter.Initialize();
+
+            Console.ResetColor();
+            Console.Clear();
         }
 
-        public override void Render()
+        public void Render()
         {
             Console.Clear();
 
             int centerX = Console.WindowWidth / 2;
             int centerY = Console.WindowHeight / 2;
 
-            for (int index = 0; index < Options.Length; index++)
+            for (int index = 0; index < Presenter.Options.Length; index++)
             {
                 string formattedOption;
-                MenuOptions currentOption = Options[index];
+                MenuOptions currentOption = Presenter.Options[index];
 
-                if (currentOption == Options[MenuOptionIndex])
+                if (currentOption == Presenter.SelectedOption)
                 {
                     formattedOption = $"- {currentOption} -";
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -53,7 +53,7 @@ namespace Silent.Tetris.Views
                 }
 
                 int textStartPositionX = centerX - formattedOption.Length / 2 - 1;
-                int textStartPositionY = centerY - Options.Length / 2 + index;
+                int textStartPositionY = centerY - Presenter.Options.Length / 2 + index;
 
                 Console.SetCursorPosition(textStartPositionX, textStartPositionY);
                 Console.Write(formattedOption);
