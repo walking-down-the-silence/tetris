@@ -11,7 +11,7 @@ namespace Silent.Tetris.Views
     public class GameView : IGameView
     {
         private readonly IContainer _container;
-        private ISpriteRenderable _gameFieldRenderable;
+        private ISpriteRenderer _gameFieldRenderable;
 
         public GameView(IContainer container)
         {
@@ -25,7 +25,7 @@ namespace Silent.Tetris.Views
 
         public void Initialize()
         {
-            _gameFieldRenderable = _container.Resolve<ISpriteRenderable>();
+            _gameFieldRenderable = _container.Resolve<ISpriteRenderer>();
 
             Presenter = new GamePresenter(_container);
             Presenter.Initialize();

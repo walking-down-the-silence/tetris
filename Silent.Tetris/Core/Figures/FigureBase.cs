@@ -1,6 +1,7 @@
 using System;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Extensions;
 
 namespace Silent.Tetris.Core.Figures
 {
@@ -11,7 +12,7 @@ namespace Silent.Tetris.Core.Figures
         private readonly Size _size;
 
         protected FigureBase(Position position, Color color, bool[,] cells)
-            : this(position, ToColorMap(color, cells))
+            : this(position, ColorArrayTransformer.ToColorMap(color, cells))
         {
         }
 
@@ -91,23 +92,6 @@ namespace Silent.Tetris.Core.Figures
             }
 
             return newArray;
-        }
-
-        private static Color[,] ToColorMap(Color color, bool[,] cells)
-        {
-            int width = cells.GetLength(1);
-            int height = cells.GetLength(0);
-            Color[,] colors = new Color[height, width];
-
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    colors[i, j] = cells[i, j] ? color : Color.Transparent;
-                }
-            }
-
-            return colors;
         }
     }
 }

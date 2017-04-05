@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Silent.Tetris.Contracts.Core;
+using Silent.Tetris.Extensions;
 
 namespace Silent.Tetris.Core.Engine
 {
@@ -31,7 +32,7 @@ namespace Silent.Tetris.Core.Engine
 
             Color[,] differenceGameFieldView = _cachedGameFieldView == null
                 ? currentGameFieldView
-                : GetViewDifference(_cachedGameFieldView, currentGameFieldView);
+                : ColorArrayTransformer.GetDifference(_cachedGameFieldView, currentGameFieldView);
 
             _cachedGameFieldView = currentGameFieldView;
 
@@ -59,31 +60,6 @@ namespace Silent.Tetris.Core.Engine
                     }
                 }
             }
-        }
-
-        protected Color[,] GetViewDifference(Color[,] previousView, Color[,] currentView)
-        {
-            Color[,] differenceView = new Color[Size.Height, Size.Width];
-
-            for (int i = 0; i < Size.Width; i++)
-            {
-                for (int j = 0; j < Size.Height; j++)
-                {
-                    if (previousView[j, i] != currentView[j, i])
-                    {
-                        if (currentView[j, i] == Color.Transparent)
-                        {
-                            differenceView[j, i] = Color.Black;
-                        }
-                        else
-                        {
-                            differenceView[j, i] = currentView[j, i];
-                        }
-                    }
-                }
-            }
-
-            return differenceView;
         }
 
         protected ISprite CreateFieldSprite(Position position, Color[,] colors)

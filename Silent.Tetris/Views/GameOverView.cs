@@ -15,7 +15,7 @@ namespace Silent.Tetris.Views
     {
         private readonly IContainer _container;
         private readonly int _score;
-        private ISpriteRenderable _gameFieldRenderable;
+        private ISpriteRenderer _gameFieldRenderable;
         private IFactory<IEnumerable<IFigure>, string> _symbolFactory;
         private IList<IFigure> _gameCharacters;
         private IList<IFigure> _overCharacters;
@@ -34,7 +34,7 @@ namespace Silent.Tetris.Views
 
         public void Initialize()
         {
-            _gameFieldRenderable = _container.Resolve<ISpriteRenderable>();
+            _gameFieldRenderable = _container.Resolve<ISpriteRenderer>();
             _symbolFactory = new SymbolFactory();
 
             _gameCharacters = _symbolFactory.Create("GAME").ToList();

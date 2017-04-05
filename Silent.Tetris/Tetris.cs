@@ -44,7 +44,7 @@ namespace Silent.Tetris
             IContainer gameContainer = new ServiceLocator();
             gameContainer.Register<IConfiguration>(BuildConsoleConfiguration("Tetris"));
             gameContainer.Register<INavigationService>(new NavigationService());
-            gameContainer.Register<ISpriteRenderable>(new SpriteRenderer());
+            gameContainer.Register<ISpriteRenderer>(new SpriteRenderer());
             gameContainer.Register<IFactory<IFigure>>(new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(container => new FigureRandomGenerator(container.Resolve<IFactory<IFigure>>()));
             gameContainer.Register<IRepository<Player>>(new JsonRepository("highscores.json"));
