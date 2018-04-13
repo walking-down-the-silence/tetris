@@ -9,9 +9,9 @@ namespace Silent.Tetris.Views
 {
     public class HomeView : IHomeView
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
 
-        public HomeView(IContainer container)
+        public HomeView(IDependencyResolver container)
         {
             _container = container;
             Size = new Size(25, 20);

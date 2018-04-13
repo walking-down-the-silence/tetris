@@ -13,7 +13,7 @@ namespace Silent.Tetris.Views
 {
     public class GameOverView : IGameOverView
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
         private readonly int _score;
         private ISpriteRenderer _gameFieldRenderable;
         private IFactory<IEnumerable<IFigure>, string> _symbolFactory;
@@ -21,7 +21,7 @@ namespace Silent.Tetris.Views
         private IList<IFigure> _overCharacters;
         private IList<IFigure> _scoreCharacters;
 
-        public GameOverView(IContainer container, int score)
+        public GameOverView(IDependencyResolver container, int score)
         {
             _container = container;
             _score = score;

@@ -1,11 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27520.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris", "Silent.Tetris\Silent.Tetris.csproj", "{4D895633-46DE-4A6B-AFC8-7B19E2406357}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.Console", "Silent.Tetris\Silent.Tetris.Console.csproj", "{4D895633-46DE-4A6B-AFC8-7B19E2406357}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris.Tests", "Silent.Tetris.Tests\Silent.Tetris.Tests.csproj", "{829B3534-E427-437A-AFCF-3A01730FE94C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.Console.Tests", "Silent.Tetris.Tests\Silent.Tetris.Console.Tests.csproj", "{829B3534-E427-437A-AFCF-3A01730FE94C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.DataAccess.Abstractions", "Silent.Tetris.DataAccess.Abstractions\Silent.Tetris.DataAccess.Abstractions.csproj", "{1499EC43-6408-43F0-92CE-D2FA799B2561}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.DataAccess.InMemory", "Silent.Tetris.DataAccess.InMemory\Silent.Tetris.DataAccess.InMemory.csproj", "{321E2D47-5C3A-4B02-9AF1-AEF72B507DCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris.Gameplay.Api", "Silent.Tetris.Gameplay.Api\Silent.Tetris.Gameplay.Api.csproj", "{3171B45E-8866-4844-B6CB-16B413731EF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris.Gameplay.Domain", "Silent.Tetris.Gameplay.Domain\Silent.Tetris.Gameplay.Domain.csproj", "{C3DE60E7-3B13-46A5-A804-81CD3F996FE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris.Gameplay.DataAccess", "Silent.Tetris.Gameplay.DataAccess\Silent.Tetris.Gameplay.DataAccess.csproj", "{27B5AE1E-3799-4D8E-967C-659B02E77038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +31,31 @@ Global
 		{829B3534-E427-437A-AFCF-3A01730FE94C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{829B3534-E427-437A-AFCF-3A01730FE94C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{829B3534-E427-437A-AFCF-3A01730FE94C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1499EC43-6408-43F0-92CE-D2FA799B2561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1499EC43-6408-43F0-92CE-D2FA799B2561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1499EC43-6408-43F0-92CE-D2FA799B2561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1499EC43-6408-43F0-92CE-D2FA799B2561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{321E2D47-5C3A-4B02-9AF1-AEF72B507DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{321E2D47-5C3A-4B02-9AF1-AEF72B507DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{321E2D47-5C3A-4B02-9AF1-AEF72B507DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{321E2D47-5C3A-4B02-9AF1-AEF72B507DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3171B45E-8866-4844-B6CB-16B413731EF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3171B45E-8866-4844-B6CB-16B413731EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3171B45E-8866-4844-B6CB-16B413731EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3171B45E-8866-4844-B6CB-16B413731EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3DE60E7-3B13-46A5-A804-81CD3F996FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3DE60E7-3B13-46A5-A804-81CD3F996FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3DE60E7-3B13-46A5-A804-81CD3F996FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3DE60E7-3B13-46A5-A804-81CD3F996FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27B5AE1E-3799-4D8E-967C-659B02E77038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27B5AE1E-3799-4D8E-967C-659B02E77038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27B5AE1E-3799-4D8E-967C-659B02E77038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27B5AE1E-3799-4D8E-967C-659B02E77038}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9F963DE-76A9-46A2-8E31-CCAA6C713C4E}
 	EndGlobalSection
 EndGlobal

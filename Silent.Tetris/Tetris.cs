@@ -16,7 +16,7 @@ namespace Silent.Tetris
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedException;
             Console.Title = "Tetris";
 
-            IContainer gameServiceLocator = BuildServiceLocator();
+            IDependencyResolver gameServiceLocator = BuildServiceLocator();
             IObserveAsync<ICommand> commandObserver = gameServiceLocator.Resolve<IObserveAsync<ICommand>>();
             IDisposable commandObserverDisposable = commandObserver.ObserveAsync();
             INavigationService navigationService = gameServiceLocator.Resolve<INavigationService>();
@@ -32,14 +32,15 @@ namespace Silent.Tetris
             }
         }
 
-        private static IContainer BuildServiceLocator()
+        private static IDependencyResolver BuildServiceLocator()
         {
-            IContainer gameContainer = new ServiceLocator();
+            IDependencyResolver gameContainer = new DependencyResolver();
             gameContainer.Register<INavigationService>(new NavigationService());
             gameContainer.Register<ISpriteRenderer>(new SpriteRenderer());
             gameContainer.Register<IFactory<IFigure>>(new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(new FigureRandomGenerator(gameContainer.Resolve<IFactory<IFigure>>()));
-            gameContainer.Register<IRepository<Player>>(new JsonRepository("highscores.json"));
+            gameContainer.Register<IGameEngine>(new GameEngine(gameContainer.Resolve<IRandomGenerator<IFigure>>()));
+            gameContainer.Register<IRepository<ScoreRecord>>(new ScoreRecordRepository("highscores.json"));
             gameContainer.Register<IObserveAsync<ICommand>>(new ConsoleCommandsObserveAsync());
             return gameContainer;
         }

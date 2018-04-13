@@ -9,9 +9,9 @@ namespace Silent.Tetris.Views
 {
     public class HighScoresView : IHighScoreView
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
 
-        public HighScoresView(IContainer container)
+        public HighScoresView(IDependencyResolver container)
         {
             _container = container;
             Size = new Size(25, 20);
@@ -49,10 +49,10 @@ namespace Silent.Tetris.Views
             {
                 int index = 0;
 
-                foreach (Player playerScore in Presenter.HighScores)
+                foreach (ScoreRecord playerScore in Presenter.HighScores)
                 {
-                    string formattedScore = playerScore.Name + playerScore.Score.ToString()
-                        .PadLeft(totalLineLength - playerScore.Name.Length, '.');
+                    string formattedScore = playerScore.Nickname + playerScore.Points.ToString()
+                        .PadLeft(totalLineLength - playerScore.Nickname.Length, '.');
 
                     int left = Size.Width - formattedScore.Length / 2 - 1;
                     int top = titleTopPosition + index + 2;

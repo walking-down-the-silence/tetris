@@ -10,10 +10,10 @@ namespace Silent.Tetris.Views
 {
     public class GameView : IGameView
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
         private ISpriteRenderer _gameFieldRenderable;
 
-        public GameView(IContainer container)
+        public GameView(IDependencyResolver container)
         {
             _container = container;
             Size = new Size(10, 22);

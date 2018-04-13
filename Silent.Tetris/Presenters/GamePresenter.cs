@@ -9,13 +9,13 @@ namespace Silent.Tetris.Presenters
 {
     public class GamePresenter : IGamePresenter
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
         private INavigationService _navigationService;
         private IGameEngine _gameEngine;
         private IObserveAsync<ICommand> _commandObserver;
         private IDisposable _gameEngineDisposable;
 
-        public GamePresenter(IContainer container)
+        public GamePresenter(IDependencyResolver container)
         {
             _container = container;
         }
@@ -30,7 +30,7 @@ namespace Silent.Tetris.Presenters
             _commandObserver = _container.Resolve<IObserveAsync<ICommand>>();
             _commandObserver.Update += Handle;
 
-            _gameEngine = new GameEngine(_container);
+            _gameEngine = _container.Resolve<IGameEngine>();
             _gameEngine.StateChanged += HandleStateChanged;
             _gameEngineDisposable = _gameEngine.Run();
         }
@@ -42,9 +42,9 @@ namespace Silent.Tetris.Presenters
                 _gameEngineDisposable.Dispose();
                 _commandObserver.Update -= Handle;
 
-                var playerScoresRepository = _container.Resolve<IRepository<Player>>();
+                var playerScoresRepository = _container.Resolve<IRepository<ScoreRecord>>();
                 playerScoresRepository.Load();
-                playerScoresRepository.Add(new Player("Unknown", _gameEngine.State.CurrentScore));
+                playerScoresRepository.Add(new ScoreRecord(Guid.Empty, "Unknown", _gameEngine.State.CurrentScore));
                 playerScoresRepository.Save();
 
                 _navigationService.Navigate(new GameOverView(_container, _gameEngine.State.CurrentScore));

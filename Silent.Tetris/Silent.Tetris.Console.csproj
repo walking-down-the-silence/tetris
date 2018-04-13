@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+	<TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Silent.Tetris.DataAccess.Abstractions\Silent.Tetris.DataAccess.Abstractions.csproj" />
+    <ProjectReference Include="..\Silent.Tetris.DataAccess.InMemory\Silent.Tetris.DataAccess.InMemory.csproj" />
+    <ProjectReference Include="..\Silent.Tetris.Gameplay.DataAccess\Silent.Tetris.Gameplay.DataAccess.csproj" />
+    <ProjectReference Include="..\Silent.Tetris.Gameplay.Domain\Silent.Tetris.Gameplay.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

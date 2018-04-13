@@ -9,7 +9,7 @@ namespace Silent.Tetris.Tests
         public void Register_WithServiceInstance_ShouldContainOneRegistration()
         {
             // Arrange
-            IContainer container = new ServiceLocator();
+            IDependencyResolver container = new DependencyResolver();
             IService stub = new StubService();
             int expected = 1;
 
@@ -25,7 +25,7 @@ namespace Silent.Tetris.Tests
         public void Register_WithServiceFactory_ShouldContainOneRegistration()
         {
             // Arrange
-            IContainer container = new ServiceLocator();
+            IDependencyResolver container = new DependencyResolver();
             int expected = 1;
 
             // Act
@@ -40,7 +40,7 @@ namespace Silent.Tetris.Tests
         public void Resolve_WithServiceInstance_ShouldReturnSameService()
         {
             // Arrange
-            IContainer container = new ServiceLocator();
+            IDependencyResolver container = new DependencyResolver();
             IService stub = new StubService();
 
             // Act
@@ -57,7 +57,7 @@ namespace Silent.Tetris.Tests
         public void Resolve_WithServiceFactory_ShouldReturnNewServices()
         {
             // Arrange
-            IContainer container = new ServiceLocator();
+            IDependencyResolver container = new DependencyResolver();
 
             // Act
             container.Register<IService>(locator => new StubService());

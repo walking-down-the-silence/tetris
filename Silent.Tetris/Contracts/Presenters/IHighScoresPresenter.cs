@@ -10,6 +10,6 @@ namespace Silent.Tetris.Contracts.Presenters
         /// <summary>
         /// Gets the collection of player scores.
         /// </summary>
-        ICollection<Player> HighScores { get; }
+        ICollection<ScoreRecord> HighScores { get; }
     }
 }

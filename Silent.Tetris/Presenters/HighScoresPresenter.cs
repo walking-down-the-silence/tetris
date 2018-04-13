@@ -9,21 +9,21 @@ namespace Silent.Tetris.Presenters
 {
     public class HighScoresPresenter : IHighScoresPresenter
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
         private INavigationService _navigationService;
         private IObserveAsync<ICommand> _commandObserver;
-        private IRepository<Player> _playerScoresRepository;
+        private IRepository<ScoreRecord> _playerScoresRepository;
 
-        public HighScoresPresenter(IContainer container)
+        public HighScoresPresenter(IDependencyResolver container)
         {
             _container = container;
         }
 
-        public ICollection<Player> HighScores => _playerScoresRepository.GetAll();
+        public ICollection<ScoreRecord> HighScores => _playerScoresRepository.GetAll();
 
         public void Initialize()
         {
-            _playerScoresRepository = _container.Resolve<IRepository<Player>>();
+            _playerScoresRepository = _container.Resolve<IRepository<ScoreRecord>>();
             _playerScoresRepository.Load();
 
             _navigationService = _container.Resolve<INavigationService>();

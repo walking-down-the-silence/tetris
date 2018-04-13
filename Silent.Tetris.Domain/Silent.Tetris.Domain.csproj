@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Silent.Tetris.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Integration\Events\" />
+    <Folder Include="Integration\Handlers\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+</Project>

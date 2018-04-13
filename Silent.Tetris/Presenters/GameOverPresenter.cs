@@ -8,11 +8,11 @@ namespace Silent.Tetris.Presenters
 {
     public class GameOverPresenter : IGameOverPresenter
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
         private INavigationService _navigationService;
         private IObserveAsync<ICommand> _commandObserver;
 
-        public GameOverPresenter(IContainer container, int score)
+        public GameOverPresenter(IDependencyResolver container, int score)
         {
             _container = container;
             Score = score;

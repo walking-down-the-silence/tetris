@@ -9,12 +9,12 @@ namespace Silent.Tetris.Presenters
 {
     public class HomePresenter : IHomePresenter
     {
-        private readonly IContainer _container;
+        private readonly IDependencyResolver _container;
         private INavigationService _navigationService;
         private IObserveAsync<ICommand> _commandObserver;
         private int _menuOptionIndex;
 
-        public HomePresenter(IContainer container)
+        public HomePresenter(IDependencyResolver container)
         {
             _container = container;
             Options = new[]
