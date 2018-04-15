@@ -8,14 +8,9 @@ namespace Silent.Tetris.Contracts.Core
     public interface IGameEngine
     {
         /// <summary>
-        /// Gets the current game field.
+        /// Gets the state of the game engine.
         /// </summary>
-        IGameField Field { get; }
-
-        /// <summary>
-        /// Gets the current game state.
-        /// </summary>
-        IGameState State { get; }
+        GameEngineState State { get; }
 
         /// <summary>
         /// Notifies when the game state changes.
@@ -25,24 +20,29 @@ namespace Silent.Tetris.Contracts.Core
         /// <summary>
         /// Runs the in-game logic.
         /// </summary>
+        /// <param name="gameId"> Game instance identifier. </param>
         /// <returns> The <see cref="IDisposable"/> instance to stop the engine. </returns>
-        IDisposable Run();
+        IDisposable Run(Guid gameId);
+
+        /// <summary>
+        /// Pauses the engine processing the game.
+        /// </summary>
+        void Pause();
+
+        /// <summary>
+        /// Resumes the engine processing the game.
+        /// </summary>
+        void Resume();
+
+        /// <summary>
+        /// End the game and stops the engine.
+        /// </summary>
+        void End();
 
         /// <summary>
         /// Checks if game is over.
         /// </summary>
         /// <returns> Game over indicator. </returns>
         bool IsGameOver();
-
-        /// <summary>
-        /// Tries to move current figure by 1 point in specified direction.
-        /// </summary>
-        /// <param name="motionDirection"> Specified direction. </param>
-        void MoveCurrentFigure(MotionDirection motionDirection);
-
-        /// <summary>
-        /// Rotates current figure to the right by 90 degrees.
-        /// </summary>
-        void RotateCurrentFigure();
     }
 }

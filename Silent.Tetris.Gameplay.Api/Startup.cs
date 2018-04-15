@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Silent.Practices.DDD;
+using Silent.Practices.EventStore;
+using Silent.Tetris.Core.Engine;
+using Silent.Tetris.Gameplay.Api.Controllers;
+using Silent.Tetris.Gameplay.Api.Infrastructure;
+using System;
+using System.Collections.Generic;
 
 namespace Silent.Tetris.Gameplay.Api
 {
@@ -24,6 +25,13 @@ namespace Silent.Tetris.Gameplay.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            IComparer<Event<Guid>> eventComparer = Comparer<Event<Guid>>.Create((x, y) => x.Timestamp.CompareTo(y.Timestamp));
+            services.AddSingleton<IEventStore<Guid, Event<Guid>>>(new MemoryEventStore<Guid, Event<Guid>>(eventComparer));
+            services.AddTransient<IRepository<GameField, Guid>, MemoryGameFieldRepository>();
+            services.AddTransient<IActiveGamesRegistry, ActiveGameRegistry>();
+            services.AddTransient<IOnlineGameService, OnlineGameService>();
+            services.AddTransient<IReplayGameService, ReplayGameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

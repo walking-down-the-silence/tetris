@@ -1,4 +1,5 @@
 ﻿using System;
+using Silent.Practices.DDD;
 using Silent.Tetris.Contracts;
 using Silent.Tetris.Contracts.Core;
 using Silent.Tetris.Contracts.Presenters;
@@ -11,6 +12,7 @@ namespace Silent.Tetris.Presenters
     {
         private readonly IDependencyResolver _container;
         private INavigationService _navigationService;
+        private IRepository<GameField, Guid> _repository;
         private IGameEngine _gameEngine;
         private IObserveAsync<ICommand> _commandObserver;
         private IDisposable _gameEngineDisposable;
@@ -20,19 +22,18 @@ namespace Silent.Tetris.Presenters
             _container = container;
         }
 
-        public IGameField Field => _gameEngine.Field;
-
-        public IGameState State => _gameEngine.State;
-
+        public IGameField Field => _repository.GetById(Guid.Empty);
+        
         public void Initialize()
         {
             _navigationService = _container.Resolve<INavigationService>();
+            _repository = _container.Resolve<IRepository<GameField, Guid>>();
             _commandObserver = _container.Resolve<IObserveAsync<ICommand>>();
             _commandObserver.Update += Handle;
 
             _gameEngine = _container.Resolve<IGameEngine>();
             _gameEngine.StateChanged += HandleStateChanged;
-            _gameEngineDisposable = _gameEngine.Run();
+            _gameEngineDisposable = _gameEngine.Run(Guid.Empty);
         }
 
         private void CheckGameOver()
@@ -42,12 +43,13 @@ namespace Silent.Tetris.Presenters
                 _gameEngineDisposable.Dispose();
                 _commandObserver.Update -= Handle;
 
-                var playerScoresRepository = _container.Resolve<IRepository<ScoreRecord>>();
-                playerScoresRepository.Load();
-                playerScoresRepository.Add(new ScoreRecord(Guid.Empty, "Unknown", _gameEngine.State.CurrentScore));
-                playerScoresRepository.Save();
+                // TODO: fix the high score saving
+                //var playerScoresRepository = _container.Resolve<IRepository<ScoreRecord>>();
+                //playerScoresRepository.Load();
+                //playerScoresRepository.Add(new ScoreRecord(Guid.Empty, "Unknown", 0));
+                //playerScoresRepository.Save();
 
-                _navigationService.Navigate(new GameOverView(_container, _gameEngine.State.CurrentScore));
+                _navigationService.Navigate(new GameOverView(_container, 0));
             }
         }
 
@@ -59,6 +61,7 @@ namespace Silent.Tetris.Presenters
         private void Handle(object sender, ICommand command)
         {
             ConsoleCommand consoleCommand = (ConsoleCommand)command;
+            IGameField gameField = _repository.GetById(Guid.Empty);
 
             switch (consoleCommand.Key)
             {
@@ -71,16 +74,16 @@ namespace Silent.Tetris.Presenters
                     CheckGameOver();
                     break;
                 case ConsoleKey.LeftArrow:
-                    _gameEngine.MoveCurrentFigure(MotionDirection.Left);
+                    gameField.MoveCurrentFigure(MotionDirection.Left);
                     break;
                 case ConsoleKey.RightArrow:
-                    _gameEngine.MoveCurrentFigure(MotionDirection.Right);
+                    gameField.MoveCurrentFigure(MotionDirection.Right);
                     break;
                 case ConsoleKey.DownArrow:
-                    _gameEngine.MoveCurrentFigure(MotionDirection.Down);
+                    gameField.MoveCurrentFigure(MotionDirection.Down);
                     break;
                 case ConsoleKey.Spacebar:
-                    _gameEngine.RotateCurrentFigure();
+                    gameField.RotateCurrentFigure();
                     break;
             }
         }

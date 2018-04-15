@@ -5,22 +5,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Sagas\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Sagas\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Sagas\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Sagas\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Domain\EventHandlers\" />
-    <Folder Include="Integration\Events\" />
     <Folder Include="Integration\EventHandlers\" />
+    <Folder Include="Integration\Events\" />
     <Folder Include="Models\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Sagas\" />
     <Folder Include="Queries\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Silent.Tetris.DataAccess.Abstractions\Silent.Tetris.DataAccess.Abstractions.csproj" />
+    <ProjectReference Include="..\Silent.Tetris.DataAccess.InMemory\Silent.Tetris.DataAccess.InMemory.csproj" />
+    <ProjectReference Include="..\Silent.Tetris.Domain.Abstractions\Silent.Tetris.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\Silent.Tetris.Gameplay.DataAccess\Silent.Tetris.Gameplay.DataAccess.csproj" />
+    <ProjectReference Include="..\Silent.Tetris.Gameplay.Domain\Silent.Tetris.Gameplay.Domain.csproj" />
   </ItemGroup>
 
 </Project>

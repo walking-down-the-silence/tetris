@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Silent.Tetris.Contracts;
+using Silent.Tetris.DataAccess.Abstractions;
 
 namespace Silent.Tetris
 {

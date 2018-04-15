@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Events\" />
+    <ProjectReference Include="..\Silent.Tetris.Domain.Abstractions\Silent.Tetris.Domain.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

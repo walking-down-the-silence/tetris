@@ -6,12 +6,11 @@ using Silent.Tetris.Contracts.Core;
 
 namespace Silent.Tetris.Core.Engine
 {
-    public class FigureRandomGenerator : IRandomGenerator<IFigure>, IDisposable
+    public class FigureRandomGenerator : IRandomGenerator<IFigure>
     {
         private readonly Random _randomGenerator = new Random();
         private readonly IFactory<IFigure> _figureFactory;
         private List<IFigure> _figures;
-        private bool _isDisposed;
 
         public FigureRandomGenerator(IFactory<IFigure> figureFactory)
         {
@@ -28,11 +27,6 @@ namespace Silent.Tetris.Core.Engine
             int nextFigureIndex = _randomGenerator.Next(_figures.Count);
             IFigure nextRandomFigure = _figures[nextFigureIndex];
             return nextRandomFigure;
-        }
-
-        public void Dispose()
-        {
-            _isDisposed = true;
         }
     }
 }

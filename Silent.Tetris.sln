@@ -11,11 +11,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.DataAccess.Ab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.DataAccess.InMemory", "Silent.Tetris.DataAccess.InMemory\Silent.Tetris.DataAccess.InMemory.csproj", "{321E2D47-5C3A-4B02-9AF1-AEF72B507DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris.Gameplay.Api", "Silent.Tetris.Gameplay.Api\Silent.Tetris.Gameplay.Api.csproj", "{3171B45E-8866-4844-B6CB-16B413731EF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.Gameplay.Api", "Silent.Tetris.Gameplay.Api\Silent.Tetris.Gameplay.Api.csproj", "{3171B45E-8866-4844-B6CB-16B413731EF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris.Gameplay.Domain", "Silent.Tetris.Gameplay.Domain\Silent.Tetris.Gameplay.Domain.csproj", "{C3DE60E7-3B13-46A5-A804-81CD3F996FE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.Gameplay.Domain", "Silent.Tetris.Gameplay.Domain\Silent.Tetris.Gameplay.Domain.csproj", "{C3DE60E7-3B13-46A5-A804-81CD3F996FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silent.Tetris.Gameplay.DataAccess", "Silent.Tetris.Gameplay.DataAccess\Silent.Tetris.Gameplay.DataAccess.csproj", "{27B5AE1E-3799-4D8E-967C-659B02E77038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.Gameplay.DataAccess", "Silent.Tetris.Gameplay.DataAccess\Silent.Tetris.Gameplay.DataAccess.csproj", "{27B5AE1E-3799-4D8E-967C-659B02E77038}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Silent.Tetris.Domain.Abstractions", "Silent.Tetris.Domain.Abstractions\Silent.Tetris.Domain.Abstractions.csproj", "{2C5E52C0-951A-4495-8027-D5E79B14D040}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4FB7C589-5959-4E63-BBA4-954FCB1F6C31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D6602C45-51F0-4DC4-8DD4-ECE2D01F1EB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{88DA8D0A-C5D0-4681-BC3F-54F8D4CF5697}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gameplay", "Gameplay", "{7483DCED-D032-46DC-B209-44972A6971B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +61,23 @@ Global
 		{27B5AE1E-3799-4D8E-967C-659B02E77038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27B5AE1E-3799-4D8E-967C-659B02E77038}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27B5AE1E-3799-4D8E-967C-659B02E77038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5E52C0-951A-4495-8027-D5E79B14D040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5E52C0-951A-4495-8027-D5E79B14D040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5E52C0-951A-4495-8027-D5E79B14D040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5E52C0-951A-4495-8027-D5E79B14D040}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4D895633-46DE-4A6B-AFC8-7B19E2406357} = {88DA8D0A-C5D0-4681-BC3F-54F8D4CF5697}
+		{829B3534-E427-437A-AFCF-3A01730FE94C} = {D6602C45-51F0-4DC4-8DD4-ECE2D01F1EB5}
+		{1499EC43-6408-43F0-92CE-D2FA799B2561} = {4FB7C589-5959-4E63-BBA4-954FCB1F6C31}
+		{321E2D47-5C3A-4B02-9AF1-AEF72B507DCC} = {4FB7C589-5959-4E63-BBA4-954FCB1F6C31}
+		{3171B45E-8866-4844-B6CB-16B413731EF3} = {7483DCED-D032-46DC-B209-44972A6971B8}
+		{C3DE60E7-3B13-46A5-A804-81CD3F996FE7} = {7483DCED-D032-46DC-B209-44972A6971B8}
+		{27B5AE1E-3799-4D8E-967C-659B02E77038} = {7483DCED-D032-46DC-B209-44972A6971B8}
+		{2C5E52C0-951A-4495-8027-D5E79B14D040} = {4FB7C589-5959-4E63-BBA4-954FCB1F6C31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9F963DE-76A9-46A2-8E31-CCAA6C713C4E}

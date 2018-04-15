@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Silent.Tetris.DataAccess.Abstractions;
+using System.Collections.Generic;
 
 namespace Silent.Tetris.Contracts
 {
