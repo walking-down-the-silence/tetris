@@ -57,9 +57,10 @@ namespace Silent.Tetris.Contracts
             return typeMatches && valueMatches;
         }
 
-        public int CompareTo(object other)
+        public int CompareTo(object obj)
         {
-            return Id.CompareTo(((Enumeration)other).Id);
+            Enumeration other = obj as Enumeration;
+            return Id.CompareTo(other?.Id);
         }
     }
 }

@@ -15,7 +15,6 @@ namespace Silent.Tetris.Presenters
         private IRepository<GameField, Guid> _repository;
         private IGameEngine _gameEngine;
         private IObserveAsync<ICommand> _commandObserver;
-        private IDisposable _gameEngineDisposable;
 
         public GamePresenter(IDependencyResolver container)
         {
@@ -33,22 +32,18 @@ namespace Silent.Tetris.Presenters
 
             _gameEngine = _container.Resolve<IGameEngine>();
             _gameEngine.StateChanged += HandleStateChanged;
-            _gameEngineDisposable = _gameEngine.Run(Guid.Empty);
+            _gameEngine.Run(Guid.Empty);
         }
 
         private void CheckGameOver()
         {
             if (_gameEngine.IsGameOver())
             {
-                _gameEngineDisposable.Dispose();
+                _gameEngine.End();
                 _commandObserver.Update -= Handle;
 
-                // TODO: fix the high score saving
-                //var playerScoresRepository = _container.Resolve<IRepository<ScoreRecord>>();
-                //playerScoresRepository.Load();
-                //playerScoresRepository.Add(new ScoreRecord(Guid.Empty, "Unknown", 0));
-                //playerScoresRepository.Save();
-
+                // TODO: add the high score here
+                
                 _navigationService.Navigate(new GameOverView(_container, 0));
             }
         }
@@ -66,7 +61,7 @@ namespace Silent.Tetris.Presenters
             switch (consoleCommand.Key)
             {
                 case ConsoleKey.Escape:
-                    _gameEngineDisposable.Dispose();
+                    _gameEngine.End();
                     _commandObserver.Update -= Handle;
                     _navigationService.Navigate(new HomeView(_container));
                     break;

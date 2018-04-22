@@ -12,7 +12,7 @@ using Silent.Tetris.Views;
 
 namespace Silent.Tetris
 {
-    internal class Tetris
+    public static class Tetris
     {
         private static void Main()
         {
@@ -43,7 +43,7 @@ namespace Silent.Tetris
             gameContainer.Register<IFactory<IFigure>>(new FigureFactory());
             gameContainer.Register<IRandomGenerator<IFigure>>(new FigureRandomGenerator(gameContainer.Resolve<IFactory<IFigure>>()));
             gameContainer.Register<IEventStore<Guid, Event<Guid>>>(new MemoryEventStore<Guid, Event<Guid>>(null));
-            //gameContainer.Register<IRepository<ScoreRecord>>(new ScoreRecordRepository("highscores.json"));
+            // TODO: register the score repository in game continaer
             gameContainer.Register<IRepository<GameField, Guid>>(new MemoryGameFieldRepository(gameContainer.Resolve<IEventStore<Guid, Event<Guid>>>()));
             gameContainer.Register<IGameEngine>(new GameEngine(gameContainer.Resolve<IRepository<GameField, Guid>>()));
             gameContainer.Register<IObserveAsync<ICommand>>(new ConsoleCommandsObserveAsync());

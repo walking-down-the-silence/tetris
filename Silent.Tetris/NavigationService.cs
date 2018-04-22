@@ -18,13 +18,14 @@ namespace Silent.Tetris
 
         private void Initialize(Size viewSize)
         {
-            if (viewSize != null && viewSize.Width > 0 && viewSize.Height > 0)
+            if (viewSize != null
+                && viewSize.Width > 0
+                && viewSize.Height > 0
+                && (viewSize.Width * 2 != Console.WindowWidth 
+                    || viewSize.Height != Console.WindowHeight))
             {
-                if (viewSize.Width * 2 != Console.WindowWidth || viewSize.Height != Console.WindowHeight)
-                {
-                    Console.SetWindowSize(viewSize.Width * 2, viewSize.Height);
-                    Console.SetBufferSize(viewSize.Width * 2, viewSize.Height);
-                }
+                Console.SetWindowSize(viewSize.Width * 2, viewSize.Height);
+                Console.SetBufferSize(viewSize.Width * 2, viewSize.Height);
             }
         }
     }

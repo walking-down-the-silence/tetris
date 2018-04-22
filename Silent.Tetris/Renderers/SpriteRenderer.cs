@@ -14,24 +14,24 @@ namespace Silent.Tetris.Renderers
             Console.Clear();
         }
 
-        public void Render(ISprite sprite)
+        public void Render(ISprite source)
         {
-            if(sprite == null)
+            if(source == null)
                 return;
 
             const string emptyCell = "  ";
             Console.CursorVisible = false;
             Console.ResetColor();
 
-            for (int x = 0; x < sprite.Size.Width; x++)
+            for (int x = 0; x < source.Size.Width; x++)
             {
-                for (int y = 0; y < sprite.Size.Height; y++)
+                for (int y = 0; y < source.Size.Height; y++)
                 {
-                    if (sprite[x, y] != Color.Transparent)
+                    if (source[x, y] != Color.Transparent)
                     {
-                        Console.BackgroundColor = _colorConverter.Convert(sprite[x, y]);
-                        int xPosition = (sprite.Position.Left + x) * emptyCell.Length;
-                        int yPosition = sprite.Position.Bottom + y;
+                        Console.BackgroundColor = _colorConverter.Convert(source[x, y]);
+                        int xPosition = (source.Position.Left + x) * emptyCell.Length;
+                        int yPosition = source.Position.Bottom + y;
                         ConsoleHelper.WriteAtPosition(xPosition, yPosition, emptyCell);
                     }
                 }

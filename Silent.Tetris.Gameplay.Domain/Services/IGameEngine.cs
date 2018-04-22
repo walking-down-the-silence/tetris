@@ -22,7 +22,7 @@ namespace Silent.Tetris.Contracts.Core
         /// </summary>
         /// <param name="gameId"> Game instance identifier. </param>
         /// <returns> The <see cref="IDisposable"/> instance to stop the engine. </returns>
-        IDisposable Run(Guid gameId);
+        void Run(Guid gameId);
 
         /// <summary>
         /// Pauses the engine processing the game.

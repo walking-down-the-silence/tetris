@@ -8,8 +8,9 @@ namespace Silent.Tetris
     public class DependencyResolver : IDependencyResolver
     {
         private readonly IDictionary<Tuple<Type, string>, Func<IDependencyResolver, object>> _registeredFactories = new Dictionary<Tuple<Type, string>, Func<IDependencyResolver, object>>();
+        private readonly List<Tuple<Type, string>> _registrations = new List<Tuple<Type, string>>();
 
-        public ICollection<Tuple<Type, string>> Registrations => _registeredFactories.Keys.ToList();
+        public ICollection<Tuple<Type, string>> Registrations => _registrations;
 
         public TService Resolve<TService>() where TService : class
         {
@@ -19,7 +20,7 @@ namespace Silent.Tetris
         public TService Resolve<TService>(string serviceName) where TService : class
         {
             Tuple<Type, string> key = new Tuple<Type, string>(typeof(TService), serviceName);
-            if (_registeredFactories.ContainsKey(key) == false)
+            if (!_registeredFactories.ContainsKey(key))
             {
                 string exceptionMessage = string.IsNullOrWhiteSpace(serviceName)
                     ? $"Service of type '{typeof(TService)}' is not registered"
@@ -59,6 +60,7 @@ namespace Silent.Tetris
             }
 
             _registeredFactories.Add(key, factoryMethod);
+            _registrations.Add(key);
         }
     }
 }

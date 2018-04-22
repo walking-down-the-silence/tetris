@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Silent.Practices.DDD;
 using Silent.Tetris.Contracts.Core;
@@ -7,9 +8,10 @@ namespace Silent.Tetris.Core.Engine
 {
     public class GameEngine : IGameEngine
     {
+        private const int SystemCommandTimeStep = 500;
         private readonly IRepository<GameField, Guid> _repository;
+        private CancellationTokenSource _tokenSource;
         private GameEngineState _gameEngineState;
-        private Disposable _gameEngineDisposable;
         private Guid _gameId;
 
         public GameEngine(IRepository<GameField, Guid> repository)
@@ -22,30 +24,25 @@ namespace Silent.Tetris.Core.Engine
 
         public event EventHandler<GameStateEventArgs> StateChanged;
 
-        public IDisposable Run(Guid gameId)
+        public void Run(Guid gameId)
         {
             _gameId = gameId;
-            _gameEngineDisposable = new Disposable();
-            GenerateMoveDownCommandsAsync(500);
-            return _gameEngineDisposable;
+            StartGameStepLoop();
         }
 
         public void Pause()
         {
-            _gameEngineDisposable.Dispose();
-            _gameEngineState = GameEngineState.Paused;
+            StopGameStepLoop(GameEngineState.Paused);
         }
 
         public void Resume()
         {
-            GenerateMoveDownCommandsAsync(500);
-            _gameEngineState = GameEngineState.Running;
+            StartGameStepLoop();
         }
 
         public void End()
         {
-            _gameEngineDisposable.Dispose();
-            _gameEngineState = GameEngineState.Ended;
+            StopGameStepLoop(GameEngineState.Ended);
         }
 
         public bool IsGameOver()
@@ -74,44 +71,34 @@ namespace Silent.Tetris.Core.Engine
             GameStateEventArgs eventArgs = new GameStateEventArgs(null, null, 0);
             StateChanged?.Invoke(this, eventArgs);
         }
+
+        private void StartGameStepLoop()
+        {
+            _tokenSource = new CancellationTokenSource();
+            GenerateMoveDownCommandsAsync(SystemCommandTimeStep, _tokenSource.Token);
+            _gameEngineState = GameEngineState.Running;
+        }
+
+        private void StopGameStepLoop(GameEngineState state)
+        {
+            _tokenSource.Cancel();
+            _gameEngineState = state;
+        }
         
-        private void GenerateMoveDownCommandsAsync(int delay)
+        private void GenerateMoveDownCommandsAsync(int delay, CancellationToken cancellationToken)
         {
             Task.Run(async () =>
             {
-                while (!_gameEngineDisposable.IsDisposed && !IsGameOver())
+                while (!cancellationToken.IsCancellationRequested && !IsGameOver())
                 {
                     IGameField gameField = _repository.GetById(_gameId);
                     gameField.MoveCurrentFigure(MotionDirection.Down);
-                    
-                    if (IsGameOver())
-                    {
-                        OnStateChanged();
-                        return;
-                    }
-
-                    // TODO: check if figure was merged with gound and if so, generate next figure
-                    //bool figureReachedGround = false;
-                    //if(figureReachedGround)
-                    //{
-                    //    gameField.AssignNextFigure(_nextFigure);
-                    //    _nextFigure = figureGenerator.GenerateNext();
-                    //}
 
                     OnStateChanged();
                     await Task.Delay(delay);
                 }
-            });
-        }
-
-        private sealed class Disposable : IDisposable
-        {
-            public bool IsDisposed { get; private set; }
-
-            public void Dispose()
-            {
-                IsDisposed = true;
-            }
+            },
+            cancellationToken);
         }
     }
 }

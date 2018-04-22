@@ -38,14 +38,14 @@ namespace Silent.Practices.DDD
                 .ToList();
         }
 
-        public virtual bool Add(TEntity entity)
+        public virtual bool Add(TEntity item)
         {
-            if (entity == null)
+            if (item == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                throw new ArgumentNullException(nameof(item));
             }
 
-            return Update(entity.Id, entity);
+            return Update(item.Id, item);
         }
 
         public virtual bool Update(TKey key, TEntity entity)

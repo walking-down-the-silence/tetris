@@ -116,7 +116,7 @@ namespace Silent.Tetris.Core.Engine
             return CreateFieldSprite(differenceGameFieldView);
         }
         
-        protected void FillColorView(Color[,] colorView, ISprite sprite)
+        private void FillColorView(Color[,] colorView, ISprite sprite)
         {
             for (int i = 0; i < sprite.Size.Width; i++)
             {
@@ -137,7 +137,7 @@ namespace Silent.Tetris.Core.Engine
             }
         }
 
-        protected ISprite CreateFieldSprite(Color[,] colors)
+        private ISprite CreateFieldSprite(Color[,] colors)
         {
             return new FieldSprite(Position.None, colors);
         }
